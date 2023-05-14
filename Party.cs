@@ -1,5 +1,5 @@
 
-namespace SecretHitler.RoleDistribution;
+namespace SecretHitler;
 
 public enum Party {
     Liberal,

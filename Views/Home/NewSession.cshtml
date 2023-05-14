@@ -1,0 +1,38 @@
+@model NewSessionViewModel
+@{
+    ViewData["Title"] = "New Session";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Create your Parliament</h1>
+    <p>Enter the names of all the ministers of parliament:</p>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4 text-start">
+                @if(!string.IsNullOrWhiteSpace(Model.Error)){
+                    <div class="alert alert-danger">@Model.Error</div>
+                }
+                <form asp-action="SetMinisters">
+                    <div class="minister-names mb-3">
+                        @for(var i = 0; i < Model.MinisterNames.Count; i++){
+                            <label class="input-group mb-3">
+                                @Html.TextBoxFor(o => o.MinisterNames[i], new { @class="form-control" })
+                                <button class="btn btn-outline-secondary remove-button" type="button">Remove</button>
+                            </label>
+                        }
+                    </div>
+                    <button class="btn btn-outline-secondary add-button" type="button">Add one</button>
+                    <button class="btn btn-outline-primary">Let's Go.</button>
+                </form>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+<script src="~/js/NewSession.js" type="text/javascript"></script>
+}

@@ -1,0 +1,50 @@
+@model MinisterProfileViewModel
+@{
+    ViewData["Title"] = "Your Secret Role";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Your Secret Role</h1>
+
+    <p>Here is your role:</p>
+    @{
+        string roleDescription;
+        switch(Model.Role){
+            case Role.Hitler:
+                roleDescription = "Hitler";
+                break;
+            case Role.Confederate:
+                roleDescription = "a Fascist";
+                break;
+            default:
+                roleDescription = "a Liberal";
+                break;
+        }
+    }
+    <h2>You are @roleDescription</h2>
+    @if(Model.Role != Role.Liberal){
+        <p>Remember: If anyone asks, say that you're a liberal!</p>
+    }
+
+    @if(Model.KnowsFascists){
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4 text-start">
+                    <p>The Fascist party members are:</p>
+                    <ul>
+                    @foreach(var minister in Model.Confederates){
+                        <li>@minister.Name</li>
+                    }
+                    <li>@Model.Hitler.Name</li>
+                    </ul>
+                    @if(Model.Role != Role.Hitler){
+                        <p>And @Model.Hitler.Name is Hitler.</p>
+                    }
+                </div>
+                <div class="col-md-4"></div>
+            </div>
+        </div>
+    }
+
+</div>
