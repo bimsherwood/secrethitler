@@ -5,12 +5,16 @@ public class MinisterProfileViewModel {
     public Guid MinisterId { get; set; }
     public Role Role { get; set; }
     public Party Party { get; set; }
-    public KnownFascist[] Confederates { get; set; }
-    public KnownFascist Hitler { get; set; }
+    public List<Minister> Confederates { get; set; }
+    public Minister Hitler { get; set; }
     public bool KnowsFascists { get; set; }
 
     // Deserialiser
-    public MinisterProfileViewModel(){ }
+    public MinisterProfileViewModel(){
+        this.KnowsFascists = false;
+        this.Confederates = new List<Minister>();
+        this.Hitler = new Minister("UNKNOWN");
+     }
 
     public MinisterProfileViewModel(Session session, Minister minister){
         
@@ -18,14 +22,11 @@ public class MinisterProfileViewModel {
             throw new ArgumentException("The session has not been set up.");
         }
 
-        var confederates = session.GetConfederates();
-        var hitler = session.GetHitler();
-
         this.MinisterId = minister.Id;
         this.Role = session.Roles.GetRole(minister);
         this.Party = session.Roles.GetParty(minister);
-        this.Confederates = confederates.Select(o => new KnownFascist(session.Names[o])).ToArray();
-        this.Hitler = new KnownFascist(session.Names[hitler]);
+        this.Confederates = session.GetConfederates();
+        this.Hitler = session.GetHitler();
         this.KnowsFascists =
             this.Role == Role.Hitler && session.Parliament.Ministers.Count < 7 ||
             this.Role == Role.Confederate;

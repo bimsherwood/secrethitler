@@ -29,4 +29,11 @@ public class GameController : Controller
         return View(viewModel);
     }
 
+    public IActionResult GameStateUpdate(Guid sessionId, Guid ministerId){
+        var session = Session.Get(sessionId);
+        var minister = session.Parliament.Lookup(ministerId);
+        var viewModel = new GameStateUpdateResult(minister, session);
+        return new JsonResult(new{});
+    }
+
 }

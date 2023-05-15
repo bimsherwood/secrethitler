@@ -7,17 +7,16 @@
     <h1 class="display-4">Which Minister are You?</h1>
     <p>Join as one of the following ministers:</p>
     
-    
     <div class="container">
         <div class="row">
             <div class="col-md-4"></div>
             <div class="col-md-4 text-start">
                 <form asp-action="Index" method="get">
                     <input type="hidden" name="sessionId" value="@Model.SessionId" />
-                    @foreach (var kv in Model.MinisterNames) {
+                    @foreach (var minister in Model.Ministers) {
                         <label>
-                            <input type="radio" name="ministerId" value="@kv.Key" />
-                            @kv.Value
+                            <input type="radio" name="ministerId" value="@minister.Id" />
+                            @minister.Name
                         </label>
                         <br>
                     }

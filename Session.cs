@@ -23,23 +23,29 @@ public class Session {
         }
     }
 
-    public Guid Id { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public Dictionary<Minister, string> Names { get; private set; }
-    public Parliament Parliament { get; set; }
-    public RoleDistribution Roles { get; set; }
+    public Guid Id { get; private set; }
+    public DateTime CreatedAt { get; private set; }
+    public Parliament Parliament { get; private set; }
+    public RoleDistribution Roles { get; private set; }
+    public List<GameMessage> Messages { get; private set; }
+    public PolicyBoard PolicyBoard { get; private set; }
+    public Minister? MinisterViewingHand { get; private set; }
+    public Minister? MinisterViewingTopOfDeck { get; private set; }
 
     private Session(string[] names){
+
         this.Id = Guid.NewGuid();
         this.CreatedAt = DateTime.Now;
-        this.Names = new Dictionary<Minister, string>();
+        this.Messages = new List<GameMessage>();
+        this.PolicyBoard = new PolicyBoard(Random.Shared);
+        this.MinisterViewingHand = null;
+        this.MinisterViewingTopOfDeck = null;
         
         // Create ministers
         var ministers = new List<Minister>();
         for(var i = 0; i < names.Length; i++){
-            var minister = new Minister();
+            var minister = new Minister(names[i]);
             ministers.Add(minister);
-            this.Names[minister] = names[i];
         }
         this.Parliament = new Parliament(ministers);
 
@@ -48,10 +54,10 @@ public class Session {
 
     }
 
-    public Minister[] GetConfederates(){
+    public List<Minister> GetConfederates(){
         return this.Parliament.Ministers
             .Where(o => this.Roles.Is(o, Role.Confederate))
-            .ToArray();
+            .ToList();
     }
 
     public Minister GetHitler(){

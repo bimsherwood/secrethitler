@@ -9,4 +9,8 @@ public class Parliament {
         this.Ministers = ministers.ToList();
     }
 
+    public Minister Lookup(Guid ministerId){
+        return this.Ministers.Single(o => o.Id == ministerId);
+    }
+
 }
