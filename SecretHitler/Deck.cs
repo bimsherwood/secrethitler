@@ -1,10 +1,23 @@
 ﻿namespace SecretHitler;
 
-public class Deck {
+public class Pile {
+    
     public List<Policy> Content { get; set; }
-    public Deck(){
+
+    private Pile(){
         this.Content = new List<Policy>();
-        this.Content.AddRange(Enumerable.Repeat(Policy.Fascist, 11));
-        this.Content.AddRange(Enumerable.Repeat(Policy.Liberal, 6));
     }
+
+    public static Pile UnshuffledDeck(){
+        var deck = new Pile();
+        deck.Content = new List<Policy>();
+        deck.Content.AddRange(Enumerable.Repeat(Policy.Fascist, 11));
+        deck.Content.AddRange(Enumerable.Repeat(Policy.Liberal, 6));
+        return deck;
+    }
+
+    public static Pile Empty(){
+        return new Pile();
+    }
+
 }

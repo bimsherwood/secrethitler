@@ -3,7 +3,7 @@ using SecretHitler;
 namespace SecretHitlerTest;
 
 [TestClass]
-public class DeckTest {
+public class ShuffleTest {
 
     [TestMethod]
     public void ShuffleChangesDeckOrder() {
@@ -11,7 +11,7 @@ public class DeckTest {
         var shuffler = new Shuffler(rand);
         var game = new GameState();
         shuffler.Shuffle(game);
-        Assert.IsFalse(Enumerable.SequenceEqual(new Deck().Content, game.Deck.Content));
+        Assert.IsFalse(Enumerable.SequenceEqual(Pile.UnshuffledDeck().Content, game.Deck.Content));
     }
     
     [TestMethod]
@@ -20,7 +20,7 @@ public class DeckTest {
         var shuffler = new Shuffler(rand);
         var game = new GameState();
         shuffler.Shuffle(game);
-        Assert.AreEqual(new Deck().Content.Count, game.Deck.Content.Count);
+        Assert.AreEqual(Pile.UnshuffledDeck().Content.Count, game.Deck.Content.Count);
     }
     
     [TestMethod]
@@ -30,7 +30,7 @@ public class DeckTest {
         var game = new GameState();
         shuffler.Shuffle(game);
         Assert.AreEqual(
-            new Deck().Content.Count(o => o == Policy.Liberal),
+            Pile.UnshuffledDeck().Content.Count(o => o == Policy.Liberal),
             game.Deck.Content.Count(o => o == Policy.Liberal));
     }
 

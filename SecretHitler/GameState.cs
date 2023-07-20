@@ -2,10 +2,14 @@ namespace SecretHitler;
 
 public class GameState {
 
-    public Deck Deck { get; set; }
+    public Pile Deck { get; set; }
+    public Pile Discard { get; set; }
+    public Pile Hand { get; set; }
 
     public GameState(){
-        this.Deck = new Deck();
+        this.Deck = Pile.UnshuffledDeck();
+        this.Discard = Pile.Empty();
+        this.Hand = Pile.Empty();
     }
 
 }
