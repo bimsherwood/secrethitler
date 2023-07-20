@@ -24,4 +24,10 @@ public class Shuffler {
         }
     }
 
+    public void ShuffleDiscardIntoDeck(GameState game){
+        game.Deck.Content.AddRange(game.Discard.Content);
+        game.Discard.Content.Clear();
+        this.Shuffle(game);
+    }
+
 }

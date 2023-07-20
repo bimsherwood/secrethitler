@@ -16,9 +16,7 @@ public class Drawer {
 
     public void MaybeShuffleThenDraw(GameState game, Shuffler shuffler, int count){
         if(game.Deck.Content.Count < count){
-            game.Deck.Content.AddRange(game.Discard.Content);
-            game.Discard.Content.Clear();
-            shuffler.Shuffle(game);
+            shuffler.ShuffleDiscardIntoDeck(game);
         }
         if (!TryDraw(game, count)){
             throw new InvalidOperationException("There are not enough cards in the deck to draw.");
