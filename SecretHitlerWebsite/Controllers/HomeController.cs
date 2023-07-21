@@ -18,12 +18,29 @@ public class HomeController : Controller {
 
     public IActionResult Apply(ApplicationSubmission application) {
         return RedirectToAction("NewGame", "Home", new{ session = application.SessionKey });
+        //return RedirectToAction("JoinGame", "Home", new{ session = application.SessionKey });
+        //return RedirectToAction("Rejected", "Home", new{ message = "Just because" });
     }
 
     public IActionResult NewGame(string session){
         ViewData["Session"] = session;
         ViewData["MyName"] = "You there";
         return View();
+    }
+
+    public IActionResult JoinGame(string session){
+        ViewData["Session"] = session;
+        ViewData["MyName"] = "You there";
+        return View();
+    }
+
+    public IActionResult Rejected(string message){
+        ViewData["RejectionMessage"] = message;
+        return View();
+    }
+
+    public IActionResult StartGame(string session){
+        return RedirectToAction("Index", "Game", new{ session = session });
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -1,0 +1,13 @@
+@{
+    ViewData["Title"] = "Home Page";
+    var rejectionMessage = ViewData["RejectionMessage"];
+}
+
+<div class="text-center">
+    <h1 class="display-4">You Cannot Join</h1>
+    <p>You cannot join this session.</p>
+    <p>
+        @rejectionMessage
+    </p>
+</div>
+

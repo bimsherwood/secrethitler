@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewData["Title"] = "Home Page";
     var session = ViewData["Session"];
     var myName = ViewData["MyName"];
@@ -14,19 +14,17 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">New Game</h1>
+    <h1 class="display-4">Join Game</h1>
     <p>
         Welcome @myName
     </p>
     <p>
-        Have your friends join your game using the session key <a href="javascript:copyText('@session')">@ViewData["Session"]</a>.
-        <small class="d-none copied-indicator">Copied!</small>
+        Wait for the creator of the session to start the game.
     </p>
 </div>
 
 <div class="d-flex justify-content-center">
-    <form asp-controller="Home" asp-action="StartGame">
-        <input type="hidden" name="Session" value="@session" />
+    <div>
         <p>
             Current players:
         </p>
@@ -37,8 +35,5 @@
             <li>Craig</li>
             <li>Dorn</li>
         </ul>
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary">Let&apos;s Go!</button>
-        </div>
-    </form>
+    </div>
 </div>

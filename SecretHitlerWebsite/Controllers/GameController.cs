@@ -11,5 +11,11 @@ public class GameController : Controller {
     public GameController(ILogger<HomeController> logger) {
         this.Logger = logger;
     }
+
+    public IActionResult Index(string session) {
+        ViewData["Session"] = session;
+        ViewData["MyName"] = "You there";
+        return View();
+    }
     
 }
