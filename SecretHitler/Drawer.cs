@@ -23,6 +23,13 @@ public class Drawer {
         }
     }
 
+    public void ReplaceHandOnDeck(GameState game){
+        var newDeck = game.Hand.Content;
+        newDeck.AddRange(game.Deck.Content);
+        game.Deck.Content = newDeck;
+        game.Hand.Content = new List<Policy>();
+    }
+
     public void DiscardOne(GameState game, int index){
         var discarded = game.Hand.Content[index];
         game.Hand.Content.RemoveAt(index);

@@ -66,4 +66,17 @@ public class DrawTest {
         Assert.AreEqual(game.Discard.Content.Count + game.Deck.Content.Count, initialDeckSize);
     }
 
+    [TestMethod]
+    public void ReplacingHandRevertsDeckStatus() {
+        var rand = new Random(1234);
+        var shuffler = new Shuffler(rand);
+        var drawer = new Drawer();
+        var game = new GameState();
+        shuffler.Shuffle(game);
+        var deckBeforeDraw = game.Deck.Content.ToList();
+        Assert.IsTrue(drawer.TryDraw(game, 3));
+        drawer.ReplaceHandOnDeck(game);
+        Assert.IsTrue(game.Deck.Content.SequenceEqual(deckBeforeDraw));
+    }
+
 }
