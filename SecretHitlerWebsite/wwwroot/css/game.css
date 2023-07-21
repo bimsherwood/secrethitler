@@ -1,0 +1,92 @@
+
+/* Main layout */
+
+.game-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.player-pane {
+    flex: 0;
+}
+
+.player-pane-compliment {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.policy-pane {
+    flex: 1;
+}
+
+.hand-pane {
+    flex: 1;
+}
+
+
+
+/* Player pane */
+
+.player-row {
+    display: flex;
+    padding: 2px;
+    margin: 2px;
+    border-radius: 0.25rem;
+    background-color: lightblue;
+    flex-direction: row;
+
+}
+
+.player-name {
+    flex: 1;
+    padding: 9px;
+    white-space: nowrap;
+}
+
+.player-hand-button {
+    flex: 0;
+    margin: 2px;
+    white-space: nowrap;
+}
+
+
+
+/* Policy pane */
+
+.policy-pane img {
+    width: 100%;
+}
+
+.policy-pane .row .col {
+    position: relative;
+}
+
+.policy-pane .row .col .card-annotation {
+    position: absolute;
+    text-align: center;
+    top: 24px;
+    left: 0;
+    right: 0;
+    font-size: medium;
+    font-weight: bold;
+}
+
+.policy-pane .row .col .card-annotation span {
+    background-color: white;
+    padding: 2px;
+    border-radius: 0.25rem;
+}
+
+
+
+/* Hand pane */
+
+.hand-pane img {
+    width: 100%;
+}
+
+.hand-pane .row .col .hand-label {
+    text-align: center;
+}
