@@ -5,11 +5,13 @@ namespace SecretHitlerTest;
 [TestClass]
 public class ShuffleTest {
 
+    private GameState InitialGameState() => new GameState(new[]{ "Aaron", "Ben", "Connor", "Denise", "Erin" }.Select(o => new Player(o)).ToList());
+
     [TestMethod]
     public void ShuffleChangesDeckOrder() {
         var rand = new Random(1234);
         var shuffler = new Shuffler(rand);
-        var game = new GameState();
+        var game = InitialGameState();
         shuffler.Shuffle(game);
         Assert.IsFalse(Enumerable.SequenceEqual(Pile.UnshuffledDeck().Clone(), game.Deck.Clone()));
     }
@@ -18,7 +20,7 @@ public class ShuffleTest {
     public void ShuffleRetainsDeckSize() {
         var rand = new Random(1234);
         var shuffler = new Shuffler(rand);
-        var game = new GameState();
+        var game = InitialGameState();
         shuffler.Shuffle(game);
         Assert.AreEqual(Pile.UnshuffledDeck().Count, game.Deck.Count);
     }
@@ -27,7 +29,7 @@ public class ShuffleTest {
     public void ShuffleKeepsPolicyCount() {
         var rand = new Random(1234);
         var shuffler = new Shuffler(rand);
-        var game = new GameState();
+        var game = InitialGameState();
         shuffler.Shuffle(game);
         Assert.AreEqual(
             Pile.UnshuffledDeck().Clone().Count(o => o == Policy.Liberal),

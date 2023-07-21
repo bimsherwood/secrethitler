@@ -8,10 +8,18 @@ public class GameState {
     public int FascistPolicyPassed { get; set; }
     public int LiberalPolicyPassed { get; set; }
 
-    public GameState(){
+    public List<Player> Players { get; set; }
+    public Player HasTheFloor { get; set; }
+
+    public Dictionary<Player, PlayerRole> Roles { get; set; }
+
+    public GameState(List<Player> players){
         this.Deck = Pile.UnshuffledDeck();
         this.Discard = Pile.Empty();
         this.Hand = Pile.Empty();
+        this.Players = players.ToList();
+        this.HasTheFloor = players.First();
+        this.Roles = players.ToDictionary(o => o, o => PlayerRole.Liberal());
     }
 
 }
