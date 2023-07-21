@@ -4,5 +4,28 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <p>Learn about Secret Hitler on the <a href="https://secrethitler.com" target="_blank">Secret Hitler Website</a>.</p>
+    <p>
+        This website implements the deck, role asignments, vote counting, and the game board.
+        You will need a chatroom to conduct public and private communication, this site does not implement communications.
+        This website also does not implement presedential rotation, term limits, or assassination. You will need to handle these kinds of rules manually.
+    </p>
+</div>
+
+<div>
+    <form asp-controller="Home" asp-action="Apply">
+        <div class="form-group">
+            <label for="PlayerName">Enter your name:</label>
+            <input id="PlayerName" name="PlayerName" class="form-control" type="text" placeholder="Abrodolph Lincoler" />
+            <small class="form-text text-muted">This must be unique in your game session.</small>
+        </div>
+        <div class="form-group">
+            <label for="SessionKey">Session Key</label>
+            <input id="SessionKey" name="SessionKey" class="form-control" type="text" placeholder="ABC1234" />
+            <small class="form-text text-muted">Enter an existing session key, or invent a new one.</small>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Apply</button>
+        </div>
+    </form>
 </div>
