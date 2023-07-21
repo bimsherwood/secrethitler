@@ -11,7 +11,7 @@ public class ShuffleTest {
         var shuffler = new Shuffler(rand);
         var game = new GameState();
         shuffler.Shuffle(game);
-        Assert.IsFalse(Enumerable.SequenceEqual(Pile.UnshuffledDeck().Content, game.Deck.Content));
+        Assert.IsFalse(Enumerable.SequenceEqual(Pile.UnshuffledDeck().Clone(), game.Deck.Clone()));
     }
     
     [TestMethod]
@@ -20,7 +20,7 @@ public class ShuffleTest {
         var shuffler = new Shuffler(rand);
         var game = new GameState();
         shuffler.Shuffle(game);
-        Assert.AreEqual(Pile.UnshuffledDeck().Content.Count, game.Deck.Content.Count);
+        Assert.AreEqual(Pile.UnshuffledDeck().Count, game.Deck.Count);
     }
     
     [TestMethod]
@@ -30,8 +30,8 @@ public class ShuffleTest {
         var game = new GameState();
         shuffler.Shuffle(game);
         Assert.AreEqual(
-            Pile.UnshuffledDeck().Content.Count(o => o == Policy.Liberal),
-            game.Deck.Content.Count(o => o == Policy.Liberal));
+            Pile.UnshuffledDeck().Clone().Count(o => o == Policy.Liberal),
+            game.Deck.Clone().Count(o => o == Policy.Liberal));
     }
 
 }

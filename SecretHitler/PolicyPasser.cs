@@ -11,9 +11,8 @@ public class PolicyPasser {
     }
 
     private bool TryPassTopPolicy(GameState game){
-        if(game.Deck.Content.Count > 0){
-            var topPolicy = game.Deck.Content[0];
-            game.Deck.Content.RemoveAt(0);
+        if(game.Deck.Count > 0){
+            var topPolicy = game.Deck.RemoveAt(0);
             PassPolicy(game, topPolicy);
             return true;
         } else {
@@ -22,7 +21,7 @@ public class PolicyPasser {
     }
 
     public void MaybeShuffleThenPassTopPolicy(GameState game, Shuffler shuffler){
-        if(game.Deck.Content.Count == 0){
+        if(game.Deck.Count == 0){
             shuffler.ShuffleDiscardIntoDeck(game);
         }
         if(!this.TryPassTopPolicy(game)){
@@ -31,10 +30,12 @@ public class PolicyPasser {
     }
 
     public void PassHand(GameState game){
-        foreach (var policy in game.Hand.Content){
-            PassPolicy(game, policy);
+        while(game.Hand.Count > 0){
+            var policies = game.Hand.RemoveAll();
+            foreach (var policy in policies){
+                PassPolicy(game, policy);
+            }
         }
-        game.Hand.Content.Clear();
     }
 
 }

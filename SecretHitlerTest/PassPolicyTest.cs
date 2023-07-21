@@ -11,9 +11,9 @@ public class PassPolicyTest {
         var shuffler = new Shuffler(rand);
         var passer = new PolicyPasser();
         var game = new GameState();
-        var initialDeckSize = game.Deck.Content.Count;
+        var initialDeckSize = game.Deck.Count;
         passer.MaybeShuffleThenPassTopPolicy(game, shuffler);
-        Assert.AreEqual(game.Deck.Content.Count + game.FascistPolicyPassed + game.LiberalPolicyPassed, initialDeckSize);
+        Assert.AreEqual(game.Deck.Count + game.FascistPolicyPassed + game.LiberalPolicyPassed, initialDeckSize);
     }
 
     [TestMethod]
@@ -22,7 +22,7 @@ public class PassPolicyTest {
         var shuffler = new Shuffler(rand);
         var passer = new PolicyPasser();
         var game = new GameState();
-        var initialDeckSize = game.Deck.Content.Count;
+        var initialDeckSize = game.Deck.Count;
         passer.MaybeShuffleThenPassTopPolicy(game, shuffler);
         Assert.AreEqual(game.FascistPolicyPassed + game.LiberalPolicyPassed, 1);
     }
@@ -33,9 +33,9 @@ public class PassPolicyTest {
         var shuffler = new Shuffler(rand);
         var passer = new PolicyPasser();
         var game = new GameState();
-        var initialDeckSize = game.Deck.Content.Count;
+        var initialDeckSize = game.Deck.Count;
         passer.MaybeShuffleThenPassTopPolicy(game, shuffler);
-        Assert.AreEqual(game.Deck.Content.Count, initialDeckSize - 1);
+        Assert.AreEqual(game.Deck.Count, initialDeckSize - 1);
     }
 
     [TestMethod]
@@ -44,12 +44,12 @@ public class PassPolicyTest {
         var shuffler = new Shuffler(rand);
         var passer = new PolicyPasser();
         var game = new GameState();
-        var initialDeckSize = game.Deck.Content.Count;
+        var initialDeckSize = game.Deck.Count;
         for(var i = 0; i < initialDeckSize; i++){
             passer.MaybeShuffleThenPassTopPolicy(game, shuffler);
         }
         Assert.ThrowsException<InvalidOperationException>(() => passer.MaybeShuffleThenPassTopPolicy(game, shuffler));
-        Assert.AreEqual(game.Deck.Content.Count, 0);
+        Assert.AreEqual(game.Deck.Count, 0);
     }
 
     
@@ -58,10 +58,10 @@ public class PassPolicyTest {
         var passer = new PolicyPasser();
         var drawer = new Drawer();
         var game = new GameState();
-        var initialDeckSize = game.Deck.Content.Count;
+        var initialDeckSize = game.Deck.Count;
         Assert.IsTrue(drawer.TryDraw(game, 3));
         passer.PassHand(game);
-        Assert.AreEqual(game.Deck.Content.Count + game.FascistPolicyPassed + game.LiberalPolicyPassed, initialDeckSize);
+        Assert.AreEqual(game.Deck.Count + game.FascistPolicyPassed + game.LiberalPolicyPassed, initialDeckSize);
     }
 
     [TestMethod]
@@ -69,7 +69,7 @@ public class PassPolicyTest {
         var passer = new PolicyPasser();
         var drawer = new Drawer();
         var game = new GameState();
-        var initialDeckSize = game.Deck.Content.Count;
+        var initialDeckSize = game.Deck.Count;
         Assert.IsTrue(drawer.TryDraw(game, 3));
         passer.PassHand(game);
         Assert.AreEqual(game.FascistPolicyPassed + game.LiberalPolicyPassed, 3);
@@ -80,10 +80,10 @@ public class PassPolicyTest {
         var passer = new PolicyPasser();
         var drawer = new Drawer();
         var game = new GameState();
-        var initialDeckSize = game.Deck.Content.Count;
+        var initialDeckSize = game.Deck.Count;
         Assert.IsTrue(drawer.TryDraw(game, 3));
         passer.PassHand(game);
-        Assert.AreEqual(game.Deck.Content.Count, initialDeckSize - 3);
+        Assert.AreEqual(game.Deck.Count, initialDeckSize - 3);
     }
 
 }

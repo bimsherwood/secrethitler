@@ -3,11 +3,9 @@ namespace SecretHitler;
 public class Drawer {
 
     public bool TryDraw(GameState game, int count){
-        if (game.Deck.Content.Count >= count){
-            var drawn = game.Deck.Content.Take(count);
-            var remaining = game.Deck.Content.Skip(count).ToList();
-            game.Hand.Content.AddRange(drawn);
-            game.Deck.Content = remaining;
+        if (game.Deck.Count >= count){
+            var drawn = game.Deck.RemoveFromTop(count);
+            game.Hand.AddToBottom(drawn);
             return true;
         } else {
             return false;
@@ -15,7 +13,7 @@ public class Drawer {
     }
 
     public void MaybeShuffleThenDraw(GameState game, Shuffler shuffler, int count){
-        if(game.Deck.Content.Count < count){
+        if(game.Deck.Count < count){
             shuffler.ShuffleDiscardIntoDeck(game);
         }
         if (!TryDraw(game, count)){
@@ -24,21 +22,18 @@ public class Drawer {
     }
 
     public void ReplaceHandOnDeck(GameState game){
-        var newDeck = game.Hand.Content;
-        newDeck.AddRange(game.Deck.Content);
-        game.Deck.Content = newDeck;
-        game.Hand.Content = new List<Policy>();
+        var hand = game.Hand.RemoveAll();
+        game.Deck.AddToTop(hand);
     }
 
     public void DiscardOne(GameState game, int index){
-        var discarded = game.Hand.Content[index];
-        game.Hand.Content.RemoveAt(index);
-        game.Discard.Content.Add(discarded);
+        var policy = game.Hand.RemoveAt(index);
+        game.Discard.AddToTop(policy);
     }
 
     public void DiscardHand(GameState game){
-        game.Discard.Content.AddRange(game.Hand.Content);
-        game.Hand.Content.Clear();
+        var hand = game.Hand.RemoveAll();
+        game.Discard.AddToTop(hand);
     }
 
 }

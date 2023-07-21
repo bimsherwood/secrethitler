@@ -17,16 +17,16 @@ public class DrawTest {
         var drawer = new Drawer();
         var game = new GameState();
         drawer.TryDraw(game,3);
-        Assert.AreEqual(game.Hand.Content.Count, 3);
+        Assert.AreEqual(game.Hand.Count, 3);
     }
 
     [TestMethod]
     public void DrawThreeDepletesDeck() {
         var drawer = new Drawer();
         var game = new GameState();
-        var deckSizeBefore = game.Deck.Content.Count;
+        var deckSizeBefore = game.Deck.Count;
         drawer.TryDraw(game,3);
-        var deckSizeAfter = game.Deck.Content.Count;
+        var deckSizeAfter = game.Deck.Count;
         Assert.AreEqual(deckSizeBefore, deckSizeAfter + 3);
     }
     
@@ -45,25 +45,25 @@ public class DrawTest {
         var shuffler = new Shuffler(rand);
         var drawer = new Drawer();
         var game = new GameState();
-        var initialDeckSize = game.Deck.Content.Count;
+        var initialDeckSize = game.Deck.Count;
         for(var i = 0; i < 100; i++){
             drawer.MaybeShuffleThenDraw(game, shuffler, 3);
             drawer.DiscardHand(game);
         }
-        Assert.AreEqual(game.Discard.Content.Count + game.Deck.Content.Count, initialDeckSize);
+        Assert.AreEqual(game.Discard.Count + game.Deck.Count, initialDeckSize);
     }
 
     [TestMethod]
     public void DiscardSingleCanEmptyHand() {
         var drawer = new Drawer();
         var game = new GameState();
-        var initialDeckSize = game.Deck.Content.Count;
+        var initialDeckSize = game.Deck.Count;
         drawer.TryDraw(game, 6);
         for(var i = 0; i < 6; i++){
             drawer.DiscardOne(game, 0);
         }
-        Assert.AreEqual(game.Hand.Content.Count, 0);
-        Assert.AreEqual(game.Discard.Content.Count + game.Deck.Content.Count, initialDeckSize);
+        Assert.AreEqual(game.Hand.Count, 0);
+        Assert.AreEqual(game.Discard.Count + game.Deck.Count, initialDeckSize);
     }
 
     [TestMethod]
@@ -73,10 +73,10 @@ public class DrawTest {
         var drawer = new Drawer();
         var game = new GameState();
         shuffler.Shuffle(game);
-        var deckBeforeDraw = game.Deck.Content.ToList();
+        var deckBeforeDraw = game.Deck.Clone();
         Assert.IsTrue(drawer.TryDraw(game, 3));
         drawer.ReplaceHandOnDeck(game);
-        Assert.IsTrue(game.Deck.Content.SequenceEqual(deckBeforeDraw));
+        Assert.IsTrue(game.Deck.Clone().SequenceEqual(deckBeforeDraw));
     }
 
 }
