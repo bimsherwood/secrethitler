@@ -39,17 +39,17 @@
 
 
 
-/* Deck pane */
+/* Deck / Discard panes */
 
-.deck-pane img {
+.pile-pane img {
     width: 100%;
 }
 
-.deck-pane .row .col {
+.pile-pane .row .col {
     position: relative;
 }
 
-.deck-pane .row .col .card-annotation {
+.pile-pane .row .col .card-annotation {
     position: absolute;
     text-align: center;
     top: 36px;
@@ -59,7 +59,7 @@
     font-weight: bold;
 }
 
-.deck-pane .row .col .card-annotation span {
+.pile-pane .row .col .card-annotation span {
     background-color: white;
     padding: 4px;
     border-radius: 0.25rem;

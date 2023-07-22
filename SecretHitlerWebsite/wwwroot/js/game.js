@@ -47,15 +47,29 @@ var render = (function(){
     function renderHand(game){
         $(".hand").addClass("d-none");
         $(".hand-label").addClass("d-none");
-        $.each(game.hand, function(i, e){
-            if(e == "Liberal"){
-                $(".hand").eq(i).prop("src", cardBackLiberalUrl);
-            } else {
-                $(".hand").eq(i).prop("src", cardBackFascistUrl);
-            }
-            $(".hand").eq(i).removeClass("d-none");
-            $(".hand-label").eq(i).removeClass("d-none");
-        });
+        if(game.currentPlayer == game.hasTheFloor){
+            $(".hand-title").text("Hand (you have the floor)");
+            $.each(game.hand, function(i, e){
+                if(e == "Liberal"){
+                    $(".hand").eq(i).prop("src", cardBackLiberalUrl);
+                } else {
+                    $(".hand").eq(i).prop("src", cardBackFascistUrl);
+                }
+                $(".hand").eq(i).removeClass("d-none");
+                $(".hand-label").eq(i).removeClass("d-none");
+            });
+        } else {
+            $(".hand-title").text("(" + game.hasTheFloor + " has the floor)");
+        }
+    }
+
+    function renderRole(game){
+        if(game.currentPlayerRole == "Liberal"){
+            $(".role-card").prop("src", cardBackLiberalUrl);
+        } else {
+            $(".role-card").prop("src", cardBackFascistUrl);
+        }
+        $(".role-annotation").text(game.currentPlayerRole);
     }
 
     return function(game){
@@ -64,6 +78,7 @@ var render = (function(){
         renderDiscardPile(game);
         renderPolicies(game);
         renderHand(game);
+        renderRole(game);
     };
 
 })();

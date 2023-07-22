@@ -40,7 +40,29 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-9 d-flex">
+        <div class="col-md-3 d-flex">
+            <div class="card w-100">
+                <div class="card-header">Vote</div>
+                <div class="card-body">
+                    <div class="p-1">
+                        <button type="button" class="btn btn-primary w-100">Yes</button>
+                    </div>
+                    <div class="p-1">
+                        <button type="button" class="btn btn-danger w-100">No</button>
+                    </div>
+                    <div class="p-1">
+                        <button type="button" class="btn btn-secondary w-100">Clear</button>
+                    </div>
+                    <div class="text-center">
+                        <h2>
+                            You voted:
+                        </h2>
+                        <h2 class="vote-indicator">Yes</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 d-flex">
             <div class="card w-100">
                 <div class="card-header">Policies Passed</div>
                 <div class="card-body">
@@ -60,6 +82,9 @@
                             </div>
                             <div class="col col-md-2">
                                 <img class="policy policy-liberal" src="~/cardback.png" />
+                            </div>
+                            <div class="col col-md-2">
+                                <!-- Liberals only need to pass 5 policies -->
                             </div>
                         </div>
                         <div class="row">
@@ -88,13 +113,13 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-4 d-flex">
+        <div class="col-md-2 d-flex">
             <div class="card w-100">
                 <div class="card-header">Deck</div>
                 <div class="card-body">
-                    <div class="container-flex deck-pane">
+                    <div class="container-flex pile-pane">
                         <div class="row">
-                            <div class="col col-md-4">
+                            <div class="col col-md-12">
                                 <img src="~/cardback.png" />
                                 <div class="card-annotation">
                                     <p>
@@ -102,7 +127,18 @@
                                     </p>
                                 </div>
                             </div>
-                            <div class="col col-md-4">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 d-flex">
+            <div class="card w-100">
+                <div class="card-header">Discard</div>
+                <div class="card-body">
+                    <div class="container-flex pile-pane">
+                        <div class="row">
+                            <div class="col col-md-12">
                                 <img src="~/cardback.png" />
                                 <div class="card-annotation">
                                     <p>
@@ -111,21 +147,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col col-md-4">
-                                <p>Deck</p>
-                            </div>
-                            <div class="col col-md-4">
-                                <p>Discard</p>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 d-flex">
+        <div class="col-md-6 d-flex">
             <div class="card w-100">
-                <div class="card-header">Hand</div>
+                <div class="card-header hand-title">Hand</div>
                 <div class="card-body">
                     <div class="container-flex hand-pane">
                         <div class="row">
@@ -160,11 +188,22 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4 d-flex">
+        <div class="col-md-2 d-flex">
             <div class="card w-100">
                 <div class="card-header">Your Role</div>
                 <div class="card-body">
-                    
+                    <div class="container-flex pile-pane">
+                        <div class="row">
+                            <div class="col col-md-12">
+                                <img class="role-card" src="~/cardback.png" />
+                                <div class="card-annotation">
+                                    <p>
+                                        <span class="role-annotation"></span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

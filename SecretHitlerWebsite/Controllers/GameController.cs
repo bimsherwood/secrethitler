@@ -27,7 +27,7 @@ public class GameController : Controller {
         var session = this.DataService.GetSession(this.Cookies.Session);
         GameStateResponse? response = null;
         session.LockSession(session => {
-            response = new GameStateResponse(session);
+            response = new GameStateResponse(session, this.Cookies.PlayerName);
         });
         return Json(response);
     }
