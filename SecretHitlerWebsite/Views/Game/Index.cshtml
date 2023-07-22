@@ -19,7 +19,11 @@
 
 <script type="text/javascript">
     var baseUrl = '@(Url.ActionLink("Index"))';
+    var cardBackUrl = '@(Url.Content("~/cardback.png"))';
+    var cardBackLiberalUrl = '@(Url.Content("~/cardbackliberal.png"))';
+    var cardBackFascistUrl = '@(Url.Content("~/cardbackfascist.png"))';
 </script>
+
 <script type="text/javascript" src="~/js/game.js"></script>
 
 }
@@ -52,19 +56,19 @@
                     </div>
                 </div>
                 <div class="col col-md-2">
-                    <img src="~/cardbackliberal.png" />
+                    <img class="policy policy-liberal" src="~/cardback.png" />
                 </div>
                 <div class="col col-md-2">
-                    <img src="~/cardbackliberal.png" />
+                    <img class="policy policy-liberal" src="~/cardback.png" />
                 </div>
                 <div class="col col-md-2">
-                    <img src="~/cardbackliberal.png" />
+                    <img class="policy policy-liberal" src="~/cardback.png" />
                 </div>
                 <div class="col col-md-2">
-                    <img src="~/cardback.png" />
+                    <img class="policy policy-liberal" src="~/cardback.png" />
                 </div>
                 <div class="col col-md-2">
-                    <img src="~/cardback.png" />
+                    <img class="policy policy-liberal" src="~/cardback.png" />
                 </div>
             </div>
             <div class="row">
@@ -80,19 +84,19 @@
                     </div>
                 </div>
                 <div class="col col-md-2">
-                    <img src="~/cardbackfascist.png" />
+                    <img class="policy policy-fascist" src="~/cardback.png" />
                 </div>
                 <div class="col col-md-2">
-                    <img src="~/cardbackfascist.png" />
+                    <img class="policy policy-fascist" src="~/cardback.png" />
                 </div>
                 <div class="col col-md-2">
-                    <img src="~/cardback.png" />
+                    <img class="policy policy-fascist" src="~/cardback.png" />
                 </div>
                 <div class="col col-md-2">
-                    <img src="~/cardback.png" />
+                    <img class="policy policy-fascist" src="~/cardback.png" />
                 </div>
                 <div class="col col-md-2">
-                    <img src="~/cardback.png" />
+                    <img class="policy policy-fascist" src="~/cardback.png" />
                 </div>
             </div>
         </div>
@@ -100,32 +104,32 @@
             <div class="row">
                 <div class="col col-md-3"></div>
                 <div class="col col-md-2">
-                    <div class="hand-label">
-                        <button type="button" class="btn btn-primary">Discard</button>
-                    </div>
+                    <img class="hand d-none" src="~/cardback.png" />
                 </div>
                 <div class="col col-md-2">
-                    <div class="hand-label">
-                        <button type="button" class="btn btn-primary">Discard</button>
-                    </div>
+                    <img class="hand d-none" src="~/cardback.png" />
                 </div>
                 <div class="col col-md-2">
-                    <div class="hand-label">
-                        <button type="button" class="btn btn-primary">Discard</button>
-                    </div>
+                    <img class="hand d-none" src="~/cardback.png" />
                 </div>
                 <div class="col col-md-3"></div>
             </div>
             <div class="row">
                 <div class="col col-md-3"></div>
                 <div class="col col-md-2">
-                    <img src="~/cardback.png" />
+                    <div class="hand-label d-none">
+                        <button type="button" class="btn btn-primary">Discard</button>
+                    </div>
                 </div>
                 <div class="col col-md-2">
-                    <img src="~/cardback.png" />
+                    <div class="hand-label d-none">
+                        <button type="button" class="btn btn-primary">Discard</button>
+                    </div>
                 </div>
                 <div class="col col-md-2">
-                    <img src="~/cardback.png" />
+                    <div class="hand-label d-none">
+                        <button type="button" class="btn btn-primary">Discard</button>
+                    </div>
                 </div>
                 <div class="col col-md-3"></div>
             </div>

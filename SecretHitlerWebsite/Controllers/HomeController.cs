@@ -122,6 +122,10 @@ public class HomeController : Controller {
         var shuffler = new Shuffler(Random.Shared);
         assigner.AssignRoles(game);
         shuffler.Shuffle(game);
+        game.LiberalPolicyPassed = 3; // TESTING
+        game.FascistPolicyPassed = 2; // TESTING
+        game.Hand.AddToTop(Policy.Fascist); // TESTING
+        game.Hand.AddToTop(Policy.Liberal); // TESTING
         session.SetGameState(game);
 
         // Go to the game screen

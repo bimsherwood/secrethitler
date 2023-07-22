@@ -38,10 +38,32 @@ var render = (function(){
         $(".discard-pile-count").text(game.discardPileSize);
     }
 
+    function renderPolicies(game){
+        $(".policy").prop("src", cardBackUrl);
+        $(".policy-liberal").slice(0,game.liberalPolicyPassed).prop("src", cardBackLiberalUrl);
+        $(".policy-fascist").slice(0,game.fascistPolicyPassed).prop("src", cardBackFascistUrl);
+    }
+
+    function renderHand(game){
+        $(".hand").addClass("d-none");
+        $(".hand-label").addClass("d-none");
+        $.each(game.hand, function(i, e){
+            if(e == "Liberal"){
+                $(".hand").eq(i).prop("src", cardBackLiberalUrl);
+            } else {
+                $(".hand").eq(i).prop("src", cardBackFascistUrl);
+            }
+            $(".hand").eq(i).removeClass("d-none");
+            $(".hand-label").eq(i).removeClass("d-none");
+        });
+    }
+
     return function(game){
         renderPlayers(game);
         renderDeck(game);
         renderDiscardPile(game);
+        renderPolicies(game);
+        renderHand(game);
     };
 
 })();
