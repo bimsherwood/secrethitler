@@ -1,33 +1,35 @@
 @{
     ViewData["Title"] = "Home Page";
-    var session = ViewData["Session"];
-    var myName = ViewData["MyName"];
 }
 
 <link rel="stylesheet" href="~/css/game.css" ></link>
+
+@section Scripts {
+
+<script type="text/html" id="player-row-template">
+    <div class="player-row">
+        <div class="player-name">
+            <span>You there</span>
+        </div>
+        <div class="player-hand-button">
+            <button class="btn btn-primary">Give</button>
+        </div>
+    </div>
+</script>
+
+<script type="text/javascript">
+    var baseUrl = '@(Url.ActionLink("Index"))';
+</script>
+<script type="text/javascript" src="~/js/game.js"></script>
+
+}
 
 <div class="game-container">
     <div class="player-pane">
         <div class="player-list">
             <div class="player-row">
                 <div class="player-name">
-                    <span>You there</span>
-                </div>
-                <div class="player-hand-button">
-                    <button class="btn btn-primary">Give</button>
-                </div>
-            </div>
-            <div class="player-row">
-                <div class="player-name">
-                    <span>Adam</span>
-                </div>
-                <div class="player-hand-button">
-                    <button class="btn btn-primary">Give</button>
-                </div>
-            </div>
-            <div class="player-row">
-                <div class="player-name">
-                    <span>Burt</span>
+                    <span></span>
                 </div>
                 <div class="player-hand-button">
                     <button class="btn btn-primary">Give</button>
@@ -45,7 +47,7 @@
                             <span>Draw Pile</span>
                         </p>
                         <p>
-                            <span>x8</span>
+                            <span>x<span class="draw-pile-count"></span></span>
                         </p>
                     </div>
                 </div>
@@ -73,7 +75,7 @@
                             <span>Discard Pile</span>
                         </p>
                         <p>
-                            <span>x4</span>
+                            <span>x<span class="discard-pile-count"></span></span>
                         </p>
                     </div>
                 </div>

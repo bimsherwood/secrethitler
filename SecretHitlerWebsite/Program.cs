@@ -3,9 +3,7 @@ using SecretHitlerWebsite;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews(options => {
-    options.Filters.Add<InvalidSessionExceptionFilter>();
-});
+builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient(typeof(Cookies));
 builder.Services.AddTransient(typeof(DataService));

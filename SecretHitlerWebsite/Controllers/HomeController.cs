@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using SecretHitler;
 using SecretHitlerWebsite.Models;
 
 namespace SecretHitlerWebsite.Controllers;
@@ -57,6 +58,7 @@ public class HomeController : Controller {
             var newSession = this.DataService.CreateSession(application.SessionKey);
             newSession.LockSession(session => {
                 session.Players.Add(application.PlayerName);
+                session.Players.AddRange(new [] { "Adam", "Bob", "Carol", "David" }); // TESTING
             });
             this.Cookies.PlayerName = application.PlayerName;
             this.Cookies.Session = application.SessionKey;
@@ -65,6 +67,7 @@ public class HomeController : Controller {
         }
     }
 
+    [InvalidSessionExceptionFilter]
     public IActionResult NewGame(){
 
         // Load the players list
@@ -81,6 +84,7 @@ public class HomeController : Controller {
 
     }
 
+    [InvalidSessionExceptionFilter]
     public IActionResult JoinGame(){
 
         // Load the players list
@@ -102,8 +106,27 @@ public class HomeController : Controller {
         return View();
     }
 
-    public IActionResult StartGame(string session){
-        return RedirectToAction("Index", "Game", new { session = session });
+    [InvalidSessionExceptionFilter]
+    public IActionResult StartGame(){
+
+        // Determine players
+        var session = this.DataService.GetSession(this.Cookies.Session);
+        var players = new List<Player>();
+        session.LockSession(lockedSession => {
+            players.AddRange(lockedSession.Players.Select(o => new Player(o)));
+        });
+
+        // Create a game
+        var game = new GameState(players);
+        var assigner = new RoleAssigner(Random.Shared);
+        var shuffler = new Shuffler(Random.Shared);
+        assigner.AssignRoles(game);
+        shuffler.Shuffle(game);
+        session.SetGameState(game);
+
+        // Go to the game screen
+        return RedirectToAction("Index", "Game");
+
     }
 
     public IActionResult InvalidSession(){
