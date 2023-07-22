@@ -39,11 +39,11 @@ public class HomeController : Controller {
                 if(lockedSession.GameStarted){
                     rejectionMessage = "The game has already started.";
                     successfullyJoined = false;
-                } else if (lockedSession.Players.Contains(application.PlayerName)) {
+                } else if (lockedSession.RegisteredPlayers.Contains(application.PlayerName)) {
                     rejectionMessage = "That name is already taken.";
                     successfullyJoined = false;
                 } else {
-                    lockedSession.Players.Add(application.PlayerName);
+                    lockedSession.RegisteredPlayers.Add(application.PlayerName);
                     successfullyJoined = true;
                 }
             });
@@ -62,8 +62,8 @@ public class HomeController : Controller {
             // Create a new session
             var newSession = this.DataService.CreateSession(application.SessionKey);
             newSession.LockSession(session => {
-                session.Players.Add(application.PlayerName);
-                session.Players.AddRange(new [] { "Adam", "Bob", "Carol", "David" }); // TESTING
+                session.RegisteredPlayers.Add(application.PlayerName);
+                session.RegisteredPlayers.AddRange(new [] { "Adam", "Bob", "Carol", "David" }); // TESTING
             });
             this.Cookies.PlayerName = application.PlayerName;
             this.Cookies.Session = application.SessionKey;
@@ -79,7 +79,7 @@ public class HomeController : Controller {
         var session = this.DataService.GetSession(this.Cookies.Session);
         var players = new List<string>();
         session.LockSession(session => {
-            players.AddRange(session.Players);
+            players.AddRange(session.RegisteredPlayers);
         });
 
         ViewData["Session"] = this.Cookies.Session;
@@ -96,7 +96,7 @@ public class HomeController : Controller {
         var session = this.DataService.GetSession(this.Cookies.Session);
         var players = new List<string>();
         session.LockSession(session => {
-            players.AddRange(session.Players);
+            players.AddRange(session.RegisteredPlayers);
         });
 
         ViewData["Session"] = this.Cookies.Session;
@@ -118,7 +118,7 @@ public class HomeController : Controller {
         var session = this.DataService.GetSession(this.Cookies.Session);
         var players = new List<Player>();
         session.LockSession(lockedSession => {
-            players.AddRange(lockedSession.Players.Select(o => new Player(o)));
+            players.AddRange(lockedSession.RegisteredPlayers.Select(o => new Player(o)));
         });
 
         // Create a game

@@ -12,6 +12,7 @@ public class GameState {
     public Player HasTheFloor { get; set; }
 
     public Dictionary<Player, PlayerRole> Roles { get; set; }
+    public Dictionary<Player, Vote> Votes { get; set; }
 
     public GameState(List<Player> players){
         this.Deck = Pile.UnshuffledDeck();
@@ -20,6 +21,7 @@ public class GameState {
         this.Players = players.ToList();
         this.HasTheFloor = players.First();
         this.Roles = players.ToDictionary(o => o, o => PlayerRole.Liberal());
+        this.Votes = players.ToDictionary(o => o, o => Vote.Undecided);
     }
 
 }
