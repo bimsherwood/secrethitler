@@ -74,17 +74,10 @@ public class HomeController : Controller {
 
     [InvalidSessionExceptionFilter]
     public IActionResult NewGame(){
-
-        // Load the players list
-        var session = this.DataService.GetSession(this.Cookies.Session);
-        var players = new List<string>();
-        session.LockSession(session => {
-            players.AddRange(session.RegisteredPlayers);
-        });
-
+        var session = CreateSession(this.Cookies.Session, this.Cookies.PlayerName);
         ViewData["Session"] = this.Cookies.Session;
         ViewData["MyName"] = this.Cookies.PlayerName;
-        ViewData["Players"] = players;
+        ViewData["Players"] = new List<string>{ this.Cookies.PlayerName };
         return View();
 
     }
@@ -95,8 +88,8 @@ public class HomeController : Controller {
         // Load the players list
         var session = this.DataService.GetSession(this.Cookies.Session);
         var players = new List<string>();
-        session.LockSession(session => {
-            players.AddRange(session.RegisteredPlayers);
+        session.LockSession(lockedSession => {
+            players.AddRange(lockedSession.RegisteredPlayers);
         });
 
         ViewData["Session"] = this.Cookies.Session;
@@ -116,21 +109,11 @@ public class HomeController : Controller {
 
         // Determine players
         var session = this.DataService.GetSession(this.Cookies.Session);
-        var players = new List<Player>();
-        session.LockSession(lockedSession => {
-            players.AddRange(lockedSession.RegisteredPlayers.Select(o => new Player(o)));
-        });
+        var players = new List<string>();
+        session.LockSession(lockedSession => players.AddRange(lockedSession.RegisteredPlayers));
 
         // Create a game
-        var game = new GameState(players);
-        var assigner = new RoleAssigner(Random.Shared);
-        var shuffler = new Shuffler(Random.Shared);
-        assigner.AssignRoles(game);
-        shuffler.Shuffle(game);
-        game.LiberalPolicyPassed = 3; // TESTING
-        game.FascistPolicyPassed = 2; // TESTING
-        game.Hand.AddToTop(Policy.Fascist); // TESTING
-        game.Hand.AddToTop(Policy.Liberal); // TESTING
+        var game = CreateInitialGameState(players);
         session.SetGameState(game);
 
         // Go to the game screen
@@ -145,6 +128,44 @@ public class HomeController : Controller {
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error() {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
+
+    private GameState CreateInitialGameState(List<string> playerNames){
+
+        var players = playerNames.Select(o => new Player(o)).ToList();
+        var game = new GameState(players);
+        var assigner = new RoleAssigner(Random.Shared);
+        var shuffler = new Shuffler(Random.Shared);
+        assigner.AssignRoles(game);
+        shuffler.Shuffle(game);
+
+        // Testing
+        game.LiberalPolicyPassed = 3;
+        game.FascistPolicyPassed = 2;
+        game.Hand.AddToTop(Policy.Fascist);
+        game.Hand.AddToTop(Policy.Liberal);
+        for(var i = 0; i < game.Players.Count; i++){
+            game.Votes[game.Players[i]] = new[]{ Vote.No, Vote.Yes }[i % 2];
+        }
+
+        return game;
+
+    }
+
+    private Session CreateSession(string sessionKey, string firstPlayerName){
+
+        var newSession = this.DataService.CreateSession(sessionKey);
+        newSession.LockSession(lockedSession => {
+            lockedSession.RegisteredPlayers.Add(firstPlayerName);
+        });
+
+        // TESTING
+        newSession.LockSession(lockedSession => {
+            lockedSession.RegisteredPlayers.AddRange(new [] { "Adam", "Bob", "Carol", "David" });
+        });
+
+        return newSession;
+        
     }
 
     private string PrimaryModelStateError(){

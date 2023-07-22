@@ -4,7 +4,7 @@ namespace SecretHitlerWebsite.Models;
 
 public class GameStateResponse {
 
-    public List<string> Players { get; set; }
+    public List<PlayerModel> Players { get; set; }
     public int DrawPileSize { get; set; }
     public int DiscardPileSize { get; set; }
     public int LiberalPolicyPassed { get; set; }
@@ -16,7 +16,7 @@ public class GameStateResponse {
 
     public GameStateResponse(Session.ILockedSession session, string currentPlayerName){
         if(session.Game is GameState game){
-            this.Players = game.Players.Select(o => o.Name).ToList();
+            this.Players = game.Players.Select(o => new PlayerModel(o, game.Votes[o])).ToList();
             this.DrawPileSize = game.Deck.Count;
             this.DiscardPileSize = game.Discard.Count;
             this.LiberalPolicyPassed = game.LiberalPolicyPassed;
@@ -44,6 +44,16 @@ public class GameStateResponse {
             return "Fascist";
         } else {
             return "Liberal";
+        }
+    }
+
+    public class PlayerModel {
+        public string Name { get; set; }
+        public string Vote { get; set; }
+        public PlayerModel(Player player, Vote vote){
+            this.Name = player.Name;
+            this.Vote = Enum.GetName(vote)
+                ?? throw new ArgumentException($"Unknown vote {vote}");
         }
     }
     

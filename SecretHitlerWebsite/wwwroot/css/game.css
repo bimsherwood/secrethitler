@@ -23,6 +23,32 @@
     white-space: nowrap;
 }
 
+.player-vote-indicator span {
+    min-width: 48px;
+    margin: 2px;
+    cursor: default;
+    background-color: gray;
+    color: white;
+}
+
+.player-vote-indicator span:hover {
+    color: white;
+}
+
+.player-vote-indicator .vote-yes {
+    min-width: 48px;
+    margin: 2px;
+    border-radius: 0.25rem;
+    background-color: green;
+}
+
+.player-vote-indicator .vote-no {
+    min-width: 48px;
+    margin: 2px;
+    border-radius: 0.25rem;
+    background-color: darkred;
+}
+
 .player-give-button {
     flex: 0;
     margin: 2px;
@@ -35,6 +61,11 @@
 
 .policy-pane img {
     width: 100%;
+}
+
+.policy-pane .row .col {
+    padding-left: 0;
+    padding-right: 0;
 }
 
 

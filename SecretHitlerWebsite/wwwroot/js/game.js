@@ -56,8 +56,15 @@ var render = (function(){
             var $template = $("#player-row-template").html();
             var $playerRow = $($template);
             $(".player-list").append($playerRow);
-            $playerRow.data("player-name", e);
-            $playerRow.find(".player-name span").text(e);
+            $playerRow.data("player-name", e.name);
+            $playerRow.find(".player-name span").text(e.name);
+            if(e.vote == "Yes"){
+                $playerRow.find(".player-vote-indicator span").addClass("vote-yes");
+                $playerRow.find(".player-vote-indicator span").text("Yes");
+            } else if(e.vote == "No"){
+                $playerRow.find(".player-vote-indicator span").addClass("vote-no");
+                $playerRow.find(".player-vote-indicator span").text("No");
+            }
             $playerRow.find(".player-give-button button").click(events.triggerGive);
         });
     }
