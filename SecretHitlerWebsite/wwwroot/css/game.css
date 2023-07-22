@@ -1,31 +1,9 @@
 
-/* Main layout */
+/* Main Layout */
 
-.game-container {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
+.game-container > .row {
+    margin-bottom: 16px;
 }
-
-.player-pane {
-    flex: 0;
-}
-
-.player-pane-compliment {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.policy-pane {
-    flex: 1;
-}
-
-.hand-pane {
-    flex: 1;
-}
-
-
 
 /* Player pane */
 
@@ -59,11 +37,19 @@
     width: 100%;
 }
 
-.policy-pane .row .col {
+
+
+/* Deck pane */
+
+.deck-pane img {
+    width: 100%;
+}
+
+.deck-pane .row .col {
     position: relative;
 }
 
-.policy-pane .row .col .card-annotation {
+.deck-pane .row .col .card-annotation {
     position: absolute;
     text-align: center;
     top: 36px;
@@ -73,7 +59,7 @@
     font-weight: bold;
 }
 
-.policy-pane .row .col .card-annotation span {
+.deck-pane .row .col .card-annotation span {
     background-color: white;
     padding: 4px;
     border-radius: 0.25rem;
