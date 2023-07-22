@@ -25,7 +25,12 @@ public class HomeController : Controller {
     }
 
     public IActionResult Apply(ApplicationSubmission application) {
-        if(this.DataService.TryGetSession(application.SessionKey, out var existingSession)){
+        if(!ModelState.IsValid){
+
+            // Report a validation error
+            return RedirectToAction("Rejected", "Home", new { message = PrimaryModelStateError() });
+
+        } else if(this.DataService.TryGetSession(application.SessionKey, out var existingSession)){
 
             // Try check the existing session.
             var successfullyJoined = false;
@@ -140,6 +145,17 @@ public class HomeController : Controller {
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error() {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
+
+    private string PrimaryModelStateError(){
+        var errors = ModelState
+            .SelectMany(o =>
+                o.Value?.Errors
+                ?? new Microsoft.AspNetCore.Mvc.ModelBinding.ModelErrorCollection())
+            .Select(o => o.ErrorMessage)
+            .Where(o => o is not null);
+        return errors.FirstOrDefault()
+            ?? "Unknown error";
     }
 
 }

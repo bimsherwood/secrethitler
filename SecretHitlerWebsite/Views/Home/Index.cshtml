@@ -2,6 +2,33 @@
     ViewData["Title"] = "Home Page";
 }
 
+@section Scripts {
+    <script type="text/javascript">
+        $(function(){
+
+            // Generate random session keys on demand
+            $(".generate-session-key-button").click(function(){
+                var randomNumber = Math.floor(Math.random() * 1000 * 1000 * 1000);
+                var randomKey = String(randomNumber).padStart(9, '0');
+                $("#SessionKey").val(randomKey);
+                $("#SessionKey").trigger("change");
+            });
+
+            // Enforce client-side validations
+            function ReviewSubmitButtonStatus(){
+                var nameValid = $("#PlayerName").val().length > 0;
+                var sessionValid = $("#SessionKey").val().length > 0;
+                var valid = nameValid && sessionValid;
+                $(".submit-button").prop("disabled", !valid);
+            }
+            $("#PlayerName").on("input change", ReviewSubmitButtonStatus);
+            $("#SessionKey").on("input change", ReviewSubmitButtonStatus);
+            ReviewSubmitButtonStatus();
+
+        });
+    </script>
+}
+
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about Secret Hitler on the <a href="https://secrethitler.com" target="_blank">Secret Hitler Website</a>.</p>
@@ -12,8 +39,8 @@
     </p>
 </div>
 
-<div>
-    <form asp-controller="Home" asp-action="Apply">
+<div class="d-flex flex justify-content-center">
+    <form asp-controller="Home" asp-action="Apply" style="max-width: 600px;">
         <div class="form-group">
             <label for="PlayerName">Enter your name:</label>
             <input id="PlayerName" name="PlayerName" class="form-control" type="text" placeholder="Abrodolph Lincoler" />
@@ -21,11 +48,16 @@
         </div>
         <div class="form-group">
             <label for="SessionKey">Session Key</label>
+            <div class="input-group">
             <input id="SessionKey" name="SessionKey" class="form-control" type="text" placeholder="ABC1234" />
+                <div class="input-group-append">
+                    <button type="button" class="generate-session-key-button btn btn-outline-secondary">Generate</span>
+                </div>
+            </div>
             <small class="form-text text-muted">Enter an existing session key, or invent a new one.</small>
         </div>
         <div class="form-group">
-            <button type="submit" class="btn btn-primary">Apply</button>
+            <button type="submit" class="submit-button btn btn-primary">Apply</button>
         </div>
     </form>
 </div>
