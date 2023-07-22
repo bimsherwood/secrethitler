@@ -46,6 +46,7 @@ public class GameController : Controller {
     }
     
     public IActionResult CastVote(string vote){
+        var caster = new VoteCaster();
         var session = this.DataService.GetSession(this.Cookies.Session);
         var playerName = this.Cookies.PlayerName;
         session.LockSession(lockedSession => {
@@ -54,7 +55,11 @@ public class GameController : Controller {
             var targetPlayer = game.Players.FirstOrDefault(o => o.Name == playerName)
                 ?? throw new InvalidOperationException($"Player {playerName} does not exist.");
             if(Enum.TryParse<Vote>(vote, out Vote parsedVote)){
-                game.Votes[targetPlayer] = parsedVote;
+                if(parsedVote == Vote.Undecided){
+                    caster.ClearVotes(game);
+                } else {
+                    caster.CastVote(game, targetPlayer, parsedVote);
+                }
             } else {
                 throw new ArgumentException($"Unknown vote {vote}");
             }

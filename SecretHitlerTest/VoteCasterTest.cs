@@ -12,7 +12,7 @@ public class VoteCasterTest {
         var caster = new VoteCaster();
         var game = InitialGameState();
         var firstPlayer = game.Players.First();
-        caster.SubmitVote(game, firstPlayer, Vote.Yes);
+        caster.CastVote(game, firstPlayer, Vote.Yes);
         Assert.AreEqual(game.Votes.Values.Where(o => o == Vote.Yes).Count(), 1);
     }
 
@@ -21,7 +21,7 @@ public class VoteCasterTest {
         var caster = new VoteCaster();
         var game = InitialGameState();
         var firstPlayer = game.Players.First();
-        caster.SubmitVote(game, firstPlayer, Vote.Yes);
+        caster.CastVote(game, firstPlayer, Vote.Yes);
         caster.ClearVotes(game);
         Assert.AreEqual(game.Votes.Values.Where(o => o != Vote.Undecided).Count(), 0);
     }

@@ -8,7 +8,7 @@ public class VoteCaster {
         }
     }
 
-    public void SubmitVote(GameState game, Player player, Vote vote){
+    public void CastVote(GameState game, Player player, Vote vote){
         game.Votes[player] = vote;
     }
 
