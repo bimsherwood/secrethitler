@@ -56,6 +56,25 @@
 }
 
 
+/* Vote pane */
+
+.vote-button-pane button, .vote-button-pane button:hover {
+    color: white;
+}
+
+.vote-button-yes {
+    background-color: darkgreen;
+}
+
+.vote-button-no {
+    background-color: darkred;
+}
+
+.vote-button-clear {
+    background-color: gray;
+}
+
+
 
 /* Policy pane */
 

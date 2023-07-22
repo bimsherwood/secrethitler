@@ -1,30 +1,4 @@
 
-var ajax = (function(){
-
-    function handleError(xhr, textStatus, errorThrown){
-        console.log("An error has occurred: " + errorThrown);
-    }
-
-    return {
-        getGameState: function(){
-            return $.ajax({
-                method: "GET",
-                url: baseUrl + "/GameState",
-                error: handleError
-            });
-        },
-        passTheFloor: function(playerName){
-            return $.ajax({
-                method: "GET",
-                url: baseUrl + "/PassTheFloor",
-                data: { playerName },
-                error: handleError
-            });
-        }
-    };
-
-})();
-
 var events = (function(){
 
     var handlers = { };
@@ -42,8 +16,42 @@ var events = (function(){
     }
 
     return {
+        triggerAjaxError: trigger("ajaxError"),
+        onAjaxError: on("ajaxError"),
         triggerGive: trigger("give"),
-        onGive: on("give")
+        onGive: on("give"),
+        triggerVote: trigger("vote"),
+        onVote: on("vote")
+    };
+
+})();
+
+var ajax = (function(){
+
+    return {
+        getGameState: function(){
+            return $.ajax({
+                method: "GET",
+                url: baseUrl + "/GameState",
+                error: events.triggerAjaxError
+            });
+        },
+        passTheFloor: function(playerName){
+            return $.ajax({
+                method: "GET",
+                url: baseUrl + "/PassTheFloor",
+                data: { playerName },
+                error: events.triggerAjaxError
+            });
+        },
+        castVote: function(vote){
+            return $.ajax({
+                method: "GET",
+                url: baseUrl + "/CastVote",
+                data: { vote },
+                error: events.triggerAjaxError
+            });
+        },
     };
 
 })();
@@ -124,15 +132,29 @@ var render = (function(){
 
 // Bindings
 (function(){
+    events.onAjaxError(function(xhr, textStatus, errorThrown){
+        console.log("An error has occurred: " + errorThrown);
+    });
     events.onGive(function(e){
         var $button = $(e.target);
         var $playerRow = $button.closest(".player-row");
         var playerName = $playerRow.data("player-name");
         ajax.passTheFloor(playerName).then(render);
     });
+    events.onVote(function(e){
+        var $button = $(e.target);
+        var vote = "Undecided";
+        if ($button.hasClass("vote-button-yes")){
+            vote = "Yes";
+        } else if($button.hasClass("vote-button-no")){
+            vote = "No";
+        }
+        ajax.castVote(vote).then(render);
+    })
 })();
 
 // On start
 $(function(){
+    $(".vote-button-pane button").click(events.triggerVote);
     ajax.getGameState().then(render);
 });

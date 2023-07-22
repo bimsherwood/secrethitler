@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using SecretHitler;
 using SecretHitlerWebsite.Models;
 
 namespace SecretHitlerWebsite.Controllers;
@@ -44,4 +45,21 @@ public class GameController : Controller {
         return RedirectToAction("GameState");
     }
     
+    public IActionResult CastVote(string vote){
+        var session = this.DataService.GetSession(this.Cookies.Session);
+        var playerName = this.Cookies.PlayerName;
+        session.LockSession(lockedSession => {
+            var game = lockedSession.Game
+                ?? throw new InvalidOperationException("The game has not started.");
+            var targetPlayer = game.Players.FirstOrDefault(o => o.Name == playerName)
+                ?? throw new InvalidOperationException($"Player {playerName} does not exist.");
+            if(Enum.TryParse<Vote>(vote, out Vote parsedVote)){
+                game.Votes[targetPlayer] = parsedVote;
+            } else {
+                throw new ArgumentException($"Unknown vote {vote}");
+            }
+        });
+        return RedirectToAction("GameState");
+    }
+
 }
