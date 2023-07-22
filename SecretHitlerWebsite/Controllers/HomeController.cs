@@ -35,15 +35,15 @@ public class HomeController : Controller {
             // Try check the existing session.
             var successfullyJoined = false;
             var rejectionMessage = "";
-            existingSession?.LockSession(session => {
-                if(session.GameStarted){
+            existingSession?.LockSession(lockedSession => {
+                if(lockedSession.GameStarted){
                     rejectionMessage = "The game has already started.";
                     successfullyJoined = false;
-                } else if (session.Players.Contains(application.PlayerName)) {
+                } else if (lockedSession.Players.Contains(application.PlayerName)) {
                     rejectionMessage = "That name is already taken.";
                     successfullyJoined = false;
                 } else {
-                    session.Players.Add(application.PlayerName);
+                    lockedSession.Players.Add(application.PlayerName);
                     successfullyJoined = true;
                 }
             });

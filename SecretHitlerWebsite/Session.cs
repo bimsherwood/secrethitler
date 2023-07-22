@@ -29,17 +29,17 @@ public class Session {
     }
 
     public interface ILockedSession {
-        GameState? GameState { get; }
+        GameState? Game { get; }
         List<string> Players { get; }
         bool GameStarted { get; }
     }
 
     private class LockedSession : ILockedSession {
-        public GameState? GameState { get; set; }
+        public GameState? Game { get; set; }
         public List<string> Players { get; set; }
-        public bool GameStarted => this.GameState != null;
+        public bool GameStarted => this.Game != null;
         public LockedSession(GameState? gameState, List<string> players){
-            this.GameState = gameState;
+            this.Game = gameState;
             this.Players = players;
         }
     }

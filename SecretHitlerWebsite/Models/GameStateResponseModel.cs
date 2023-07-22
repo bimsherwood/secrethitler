@@ -15,7 +15,7 @@ public class GameStateResponse {
     public string CurrentPlayerRole { get; set; }
 
     public GameStateResponse(Session.ILockedSession session, string currentPlayerName){
-        if(session.GameState is GameState game){
+        if(session.Game is GameState game){
             this.Players = game.Players.Select(o => o.Name).ToList();
             this.DrawPileSize = game.Deck.Count;
             this.DiscardPileSize = game.Discard.Count;

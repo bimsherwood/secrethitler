@@ -12,7 +12,38 @@ var ajax = (function(){
                 url: baseUrl + "/GameState",
                 error: handleError
             });
+        },
+        passTheFloor: function(playerName){
+            return $.ajax({
+                method: "GET",
+                url: baseUrl + "/PassTheFloor",
+                data: { playerName },
+                error: handleError
+            });
         }
+    };
+
+})();
+
+var events = (function(){
+
+    var handlers = { };
+
+    function on(eventName){
+        return function(f){
+            handlers[eventName] = f;
+        }
+    }
+
+    function trigger(eventName){
+        return function(...args){
+            handlers[eventName](...args);
+        }
+    }
+
+    return {
+        triggerGive: trigger("give"),
+        onGive: on("give")
     };
 
 })();
@@ -25,8 +56,9 @@ var render = (function(){
             var $template = $("#player-row-template").html();
             var $playerRow = $($template);
             $(".player-list").append($playerRow);
-            $playerRow.find(".player-row").data("player-name", e);
+            $playerRow.data("player-name", e);
             $playerRow.find(".player-name span").text(e);
+            $playerRow.find(".player-give-button button").click(events.triggerGive);
         });
     }
 
@@ -83,8 +115,17 @@ var render = (function(){
 
 })();
 
-$(function(){
-    ajax.getGameState().then(function(game){
-        setTimeout(function(){ render(game); }, 3000);
+// Bindings
+(function(){
+    events.onGive(function(e){
+        var $button = $(e.target);
+        var $playerRow = $button.closest(".player-row");
+        var playerName = $playerRow.data("player-name");
+        ajax.passTheFloor(playerName).then(render);
     });
+})();
+
+// On start
+$(function(){
+    ajax.getGameState().then(render);
 });
