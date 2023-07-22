@@ -16,7 +16,7 @@ public class GameStateResponse {
 
     public GameStateResponse(Session.ILockedSession session, string currentPlayerName){
         if(session.Game is GameState game){
-            this.Players = game.Players.Select(o => new PlayerModel(o, game.Votes[o])).ToList();
+            this.Players = game.Players.Select(o => MapPlayer(game, o)).ToList();
             this.DrawPileSize = game.Deck.Count;
             this.DiscardPileSize = game.Discard.Count;
             this.LiberalPolicyPassed = game.LiberalPolicyPassed;
@@ -45,6 +45,17 @@ public class GameStateResponse {
         } else {
             return "Liberal";
         }
+    }
+
+    private PlayerModel MapPlayer(GameState game, Player player){
+        Vote visibleVote;
+        if(game.Votes.Values.All(o => o != Vote.Undecided)){
+            visibleVote = game.Votes[player];
+        } else {
+            visibleVote = Vote.Undecided;
+        }
+        var model = new PlayerModel(player, visibleVote);
+        return model;
     }
 
     public class PlayerModel {
