@@ -24,7 +24,7 @@ public class HomeController : Controller {
     }
 
     public IActionResult Apply(ApplicationSubmission application) {
-        if(this.DataService.TryFindSession(application.SessionKey, out var existingSession)){
+        if(this.DataService.TryGetSession(application.SessionKey, out var existingSession)){
 
             // Try check the existing session.
             var successfullyJoined = false;
@@ -66,15 +66,35 @@ public class HomeController : Controller {
     }
 
     public IActionResult NewGame(){
+
+        // Load the players list
+        var session = this.DataService.GetSession(this.Cookies.Session);
+        var players = new List<string>();
+        session.LockSession(session => {
+            players.AddRange(session.Players);
+        });
+
         ViewData["Session"] = this.Cookies.Session;
         ViewData["MyName"] = this.Cookies.PlayerName;
+        ViewData["Players"] = players;
         return View();
+
     }
 
     public IActionResult JoinGame(){
+
+        // Load the players list
+        var session = this.DataService.GetSession(this.Cookies.Session);
+        var players = new List<string>();
+        session.LockSession(session => {
+            players.AddRange(session.Players);
+        });
+
         ViewData["Session"] = this.Cookies.Session;
         ViewData["MyName"] = this.Cookies.PlayerName;
+        ViewData["Players"] = players;
         return View();
+        
     }
 
     public IActionResult Rejected(string message){

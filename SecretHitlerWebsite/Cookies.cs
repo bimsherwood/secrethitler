@@ -11,7 +11,7 @@ public class Cookies {
     public string Session {
         get {
             return this.Http.HttpContext?.Request.Cookies[SessionCookieName]
-                ?? throw new MissingCookieException(SessionCookieName);
+                ?? throw new InvalidSessionException($"Missing cookie {SessionCookieName}");
         }
         set {
             this.Http.HttpContext?.Response.Cookies.Delete(SessionCookieName);
@@ -22,7 +22,7 @@ public class Cookies {
     public string PlayerName {
         get {
             return this.Http.HttpContext?.Request.Cookies[PlayerNameCookieName]
-                ?? throw new MissingCookieException(PlayerNameCookieName);
+                ?? throw new InvalidSessionException($"Missing cookie {PlayerNameCookieName}");
         }
         set {
             this.Http.HttpContext?.Response.Cookies.Delete(PlayerNameCookieName);

@@ -4,7 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews(options => {
-    options.Filters.Add<MissingCookieExceptionFilter>();
+    options.Filters.Add<InvalidSessionExceptionFilter>();
 });
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient(typeof(Cookies));

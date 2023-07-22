@@ -2,6 +2,7 @@
     ViewData["Title"] = "Home Page";
     var session = ViewData["Session"];
     var myName = ViewData["MyName"];
+    var players = (List<string>)(ViewData["Players"] ?? throw new ArgumentNullException("ViewData.Players"));
 }
 
 @section Scripts {
@@ -29,11 +30,10 @@
             Current players:
         </p>
         <ul>
-            <li>You there</li>
-            <li>Allan</li>
-            <li>Ben</li>
-            <li>Craig</li>
-            <li>Dorn</li>
+            @foreach(var player in players){
+                <li>@player</li>
+            }
         </ul>
+        <button type="button" class="btn btn-secondary" onclick="location.reload()">Refresh</button>
     </div>
 </div>
