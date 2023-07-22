@@ -66,7 +66,7 @@
 .policy-pane .row .col .card-annotation {
     position: absolute;
     text-align: center;
-    top: 24px;
+    top: 36px;
     left: 0;
     right: 0;
     font-size: medium;
@@ -75,8 +75,9 @@
 
 .policy-pane .row .col .card-annotation span {
     background-color: white;
-    padding: 2px;
+    padding: 4px;
     border-radius: 0.25rem;
+    font-size: large;
 }
 
 

@@ -1,7 +1,14 @@
+using SecretHitlerWebsite;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(options => {
+    options.Filters.Add<MissingCookieExceptionFilter>();
+});
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddTransient(typeof(Cookies));
+builder.Services.AddTransient(typeof(DataService));
 
 var app = builder.Build();
 
