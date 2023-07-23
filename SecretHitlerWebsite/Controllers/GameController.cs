@@ -65,6 +65,19 @@ public class GameController : Controller {
         return RedirectToAction("GameState");
     }
 
+    public IActionResult DrawThree(){
+        var drawer = new Drawer();
+        var shuffler = new Shuffler(Random.Shared);
+        var session = this.DataService.GetSession(this.Cookies.Session);
+        session.LockSession(lockedSession => {
+            var game = lockedSession.Game;
+            if(game.Hand.Count == 0){
+                drawer.MaybeShuffleThenDraw(game, shuffler, 3);
+            }
+        });
+        return RedirectToAction("GameState");
+    }
+
     public IActionResult DrawFromDeck(){
         var drawer = new Drawer();
         var session = this.DataService.GetSession(this.Cookies.Session);
@@ -93,6 +106,16 @@ public class GameController : Controller {
         session.LockSession(lockedSession => {
             var game = lockedSession.Game;
             drawer.Discard(game, index);
+        });
+        return RedirectToAction("GameState");
+    }
+
+    public IActionResult UnDiscard(){
+        var drawer = new Drawer();
+        var session = this.DataService.GetSession(this.Cookies.Session);
+        session.LockSession(lockedSession => {
+            var game = lockedSession.Game;
+            drawer.TryUnDiscard(game);
         });
         return RedirectToAction("GameState");
     }

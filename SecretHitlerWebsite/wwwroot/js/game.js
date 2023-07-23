@@ -24,10 +24,14 @@ var events = (function(){
         onVote: on("vote"),
         triggerDrawFromDeck: trigger("drawFromDeck"),
         onDrawFromDeck: on("drawFromDeck"),
+        triggerDrawThree: trigger("drawThree"),
+        onDrawThree: on("drawThree"),
         triggerReplaceOnDeck: trigger("replaceOnDeck"),
         onReplaceOnDeck: on("replaceOnDeck"),
         triggerDiscard: trigger("discard"),
-        onDiscard: on("discard")
+        onDiscard: on("discard"),
+        triggerUnDiscard: trigger("unDiscard"),
+        onUnDiscard: on("unDiscard")
     };
 
 })();
@@ -65,6 +69,13 @@ var ajax = (function(){
                 error: events.triggerAjaxError
             });
         },
+        drawThree: function(){
+            return $.ajax({
+                method: "POST",
+                url: baseUrl + "/DrawThree",
+                error: events.triggerAjaxError
+            });
+        },
         replaceOnDeck: function(index){
             return $.ajax({
                 method: "POST",
@@ -78,6 +89,13 @@ var ajax = (function(){
                 method: "POST",
                 url: baseUrl + "/Discard",
                 data: { index },
+                error: events.triggerAjaxError
+            });
+        },
+        unDiscard: function(){
+            return $.ajax({
+                method: "POST",
+                url: baseUrl + "/UnDiscard",
                 error: events.triggerAjaxError
             });
         }
@@ -183,6 +201,9 @@ var render = (function(){
     events.onDrawFromDeck(function(e){
         ajax.drawFromDeck().then(render);
     });
+    events.onDrawThree(function(e){
+        ajax.drawThree().then(render);
+    });
     events.onReplaceOnDeck(function(e){
         var $button = $(e.target);
         var index = $button.data("hand-index");
@@ -193,12 +214,17 @@ var render = (function(){
         var index = $button.data("hand-index");
         ajax.discard(index).then(render);
     });
+    events.onUnDiscard(function(e){
+        ajax.unDiscard().then(render);
+    });
 })();
 
 // On start
 $(function(){
     $(".vote-button-pane button").click(events.triggerVote);
     $(".deck-draw-button").click(events.triggerDrawFromDeck);
+    $(".deck-draw-three-button").click(events.triggerDrawThree);
+    $(".discard-pile-undiscard-button").click(events.triggerUnDiscard);
     $(".discard-button").click(events.triggerDiscard);
     $(".replace-button").click(events.triggerReplaceOnDeck);
     ajax.getGameState().then(render);

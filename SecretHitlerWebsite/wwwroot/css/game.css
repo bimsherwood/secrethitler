@@ -134,3 +134,7 @@
 .hand-pane .row .col .hand-label {
     text-align: center;
 }
+
+.hand-pane .row .col .hand-label div {
+    margin-bottom: 8px;
+}
