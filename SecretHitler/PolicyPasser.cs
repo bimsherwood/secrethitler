@@ -39,7 +39,8 @@ public class PolicyPasser {
     }
 
     public void MaybeShuffleThenPassTopPolicy(GameState game, Shuffler shuffler){
-        if(game.Deck.Count == 0){
+        // The policy deck always has at least 3 tiles before being interacted with
+        if(game.Deck.Count < 3){
             shuffler.ShuffleDiscardIntoDeck(game);
         }
         if(!this.TryPassTopPolicy(game)){
