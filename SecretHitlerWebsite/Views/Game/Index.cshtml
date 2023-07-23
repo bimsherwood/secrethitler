@@ -121,9 +121,12 @@
                             <div class="col col-md-12">
                                 <img src="~/cardback.png" />
                                 <div class="card-annotation">
-                                    <p>
+                                    <div>
                                         <span>x<span class="draw-pile-count">0</span></span>
-                                    </p>
+                                    </div>
+                                    <div>
+                                        <button type="button" class="deck-draw-button btn btn-primary">Draw</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -140,9 +143,9 @@
                             <div class="col col-md-12">
                                 <img src="~/cardback.png" />
                                 <div class="card-annotation">
-                                    <p>
+                                    <div>
                                         <span>x<span class="discard-pile-count">0</span></span>
-                                    </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -169,17 +172,32 @@
                         <div class="row">
                             <div class="col col-md-4">
                                 <div class="hand-label d-none">
-                                    <button type="button" class="btn btn-primary">Discard</button>
+                                    <div>
+                                        <button type="button" class="discard-button btn btn-primary" data-hand-index="0">Discard</button>
+                                    </div>
+                                    <div>
+                                        <button type="button" class="replace-button btn btn-primary" data-hand-index="0">Put Back</button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col col-md-4">
                                 <div class="hand-label d-none">
-                                    <button type="button" class="btn btn-primary">Discard</button>
+                                    <div>
+                                        <button type="button" class="discard-button btn btn-primary" data-hand-index="1">Discard</button>
+                                    </div>
+                                    <div>
+                                        <button type="button" class="replace-button btn btn-primary" data-hand-index="1">Put Back</button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col col-md-4">
                                 <div class="hand-label d-none">
-                                    <button type="button" class="btn btn-primary">Discard</button>
+                                    <div>
+                                        <button type="button" class="discard-button btn btn-primary" data-hand-index="2">Discard</button>
+                                    </div>
+                                    <div>
+                                        <button type="button" class="replace-button btn btn-primary" data-hand-index="2">Put Back</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

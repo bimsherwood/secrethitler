@@ -142,8 +142,6 @@ public class HomeController : Controller {
         // Testing
         game.LiberalPolicyPassed = 3;
         game.FascistPolicyPassed = 2;
-        game.Hand.AddToTop(Policy.Fascist);
-        game.Hand.AddToTop(Policy.Liberal);
         for(var i = 0; i < game.Players.Count; i++){
             game.Votes[game.Players[i]] = new[]{ Vote.No, Vote.Yes }[i % 2];
         }

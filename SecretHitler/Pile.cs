@@ -26,6 +26,12 @@ public class Pile {
 
     public int Count => this.Content.Count;
     
+    public Policy RemoveFromTop(){
+        var top = this.Content.First();
+        this.Content.RemoveAt(0);
+        return top;
+    }
+
     public List<Policy> RemoveFromTop(int count){
         var top = this.Content.Take(count).ToList();
         this.Content = this.Content.Skip(count).ToList();
@@ -54,6 +60,10 @@ public class Pile {
 
     public void AddToBottom(List<Policy> policies){
         this.Content.AddRange(policies);
+    }
+
+    public void AddToBottom(Policy policy){
+        this.Content.Add(policy);
     }
 
     public List<Policy> Clone(){

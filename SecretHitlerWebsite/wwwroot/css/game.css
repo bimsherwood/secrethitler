@@ -5,6 +5,8 @@
     margin-bottom: 16px;
 }
 
+
+
 /* Player pane */
 
 .player-row {
@@ -54,6 +56,7 @@
     margin: 2px;
     white-space: nowrap;
 }
+
 
 
 /* Vote pane */
@@ -107,6 +110,10 @@
     right: 0;
     font-size: medium;
     font-weight: bold;
+}
+
+.pile-pane .row .col .card-annotation div {
+    margin-bottom: 8px;
 }
 
 .pile-pane .row .col .card-annotation span {

@@ -36,8 +36,7 @@ public class GameController : Controller {
     public IActionResult PassTheFloor(string playerName){
         var session = this.DataService.GetSession(this.Cookies.Session);
         session.LockSession(lockedSession => {
-            var game = lockedSession.Game
-                ?? throw new InvalidOperationException("The game has not started.");
+            var game = lockedSession.Game;
             var targetPlayer = game.Players.FirstOrDefault(o => o.Name == playerName)
                 ?? throw new InvalidOperationException($"Player {playerName} does not exist.");
             game.HasTheFloor = targetPlayer;
@@ -50,8 +49,7 @@ public class GameController : Controller {
         var session = this.DataService.GetSession(this.Cookies.Session);
         var playerName = this.Cookies.PlayerName;
         session.LockSession(lockedSession => {
-            var game = lockedSession.Game
-                ?? throw new InvalidOperationException("The game has not started.");
+            var game = lockedSession.Game;
             var targetPlayer = game.Players.FirstOrDefault(o => o.Name == playerName)
                 ?? throw new InvalidOperationException($"Player {playerName} does not exist.");
             if(Enum.TryParse<Vote>(vote, out Vote parsedVote)){
@@ -66,5 +64,39 @@ public class GameController : Controller {
         });
         return RedirectToAction("GameState");
     }
+
+    public IActionResult DrawFromDeck(){
+        var drawer = new Drawer();
+        var session = this.DataService.GetSession(this.Cookies.Session);
+        session.LockSession(lockedSession => {
+            var game = lockedSession.Game;
+            if(game.Hand.Count < 3){
+                drawer.TryDraw(game, 1);
+            }
+        });
+        return RedirectToAction("GameState");
+    }
+
+    public IActionResult ReplaceOnDeck(int index){
+        var drawer = new Drawer();
+        var session = this.DataService.GetSession(this.Cookies.Session);
+        session.LockSession(lockedSession => {
+            var game = lockedSession.Game;
+            drawer.ReplaceOnDeck(game, index);
+        });
+        return RedirectToAction("GameState");
+    }
+
+    /*
+    public IActionResult ReplaceOnDeck(){
+        var drawer = new Drawer();
+        var session = this.DataService.GetSession(this.Cookies.Session);
+        session.LockSession(lockedSession => {
+            var game = lockedSession.Game;
+            drawer.TryUnDiscard(game);
+        });
+        return RedirectToAction("GameState");
+    }
+    */
 
 }

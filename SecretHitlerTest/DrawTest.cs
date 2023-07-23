@@ -50,7 +50,9 @@ public class DrawTest {
         var initialDeckSize = game.Deck.Count;
         for(var i = 0; i < 100; i++){
             drawer.MaybeShuffleThenDraw(game, shuffler, 3);
-            drawer.DiscardHand(game);
+            drawer.Discard(game, 0);
+            drawer.Discard(game, 0);
+            drawer.Discard(game, 0);
         }
         Assert.AreEqual(game.Discard.Count + game.Deck.Count, initialDeckSize);
     }
@@ -62,7 +64,7 @@ public class DrawTest {
         var initialDeckSize = game.Deck.Count;
         drawer.TryDraw(game, 6);
         for(var i = 0; i < 6; i++){
-            drawer.DiscardOne(game, 0);
+            drawer.Discard(game, 0);
         }
         Assert.AreEqual(game.Hand.Count, 0);
         Assert.AreEqual(game.Discard.Count + game.Deck.Count, initialDeckSize);
@@ -77,7 +79,9 @@ public class DrawTest {
         shuffler.Shuffle(game);
         var deckBeforeDraw = game.Deck.Clone();
         Assert.IsTrue(drawer.TryDraw(game, 3));
-        drawer.ReplaceHandOnDeck(game);
+        drawer.ReplaceOnDeck(game, 2);
+        drawer.ReplaceOnDeck(game, 1);
+        drawer.ReplaceOnDeck(game, 0);
         Assert.IsTrue(game.Deck.Clone().SequenceEqual(deckBeforeDraw));
     }
 

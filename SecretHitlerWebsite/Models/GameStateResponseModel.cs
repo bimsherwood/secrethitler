@@ -15,19 +15,16 @@ public class GameStateResponse {
     public string CurrentPlayerRole { get; set; }
 
     public GameStateResponse(Session.ILockedSession session, string currentPlayerName){
-        if(session.Game is GameState game){
-            this.Players = game.Players.Select(o => MapPlayer(game, o)).ToList();
-            this.DrawPileSize = game.Deck.Count;
-            this.DiscardPileSize = game.Discard.Count;
-            this.LiberalPolicyPassed = game.LiberalPolicyPassed;
-            this.FascistPolicyPassed = game.FascistPolicyPassed;
-            this.Hand = game.Hand.Clone().Select(PolicyName).ToArray();
-            this.CurrentPlayer = currentPlayerName;
-            this.HasTheFloor = game.HasTheFloor.Name;
-            this.CurrentPlayerRole = PlayerRoleName(game, currentPlayerName);
-        } else {
-            throw new InvalidOperationException("The game has not started.");
-        }
+        var game = session.Game;
+        this.Players = game.Players.Select(o => MapPlayer(game, o, currentPlayerName)).ToList();
+        this.DrawPileSize = game.Deck.Count;
+        this.DiscardPileSize = game.Discard.Count;
+        this.LiberalPolicyPassed = game.LiberalPolicyPassed;
+        this.FascistPolicyPassed = game.FascistPolicyPassed;
+        this.Hand = game.Hand.Clone().Select(PolicyName).ToArray();
+        this.CurrentPlayer = currentPlayerName;
+        this.HasTheFloor = game.HasTheFloor.Name;
+        this.CurrentPlayerRole = PlayerRoleName(game, currentPlayerName);
     }
 
     private string PolicyName(Policy policy){
@@ -47,9 +44,11 @@ public class GameStateResponse {
         }
     }
 
-    private PlayerModel MapPlayer(GameState game, Player player){
+    private PlayerModel MapPlayer(GameState game, Player player, string currentPlayerName){
         Vote visibleVote;
-        if(game.Votes.Values.All(o => o != Vote.Undecided)){
+        var voteIsVisible = player.Name == currentPlayerName
+            || game.Votes.Values.All(o => o != Vote.Undecided);
+        if(voteIsVisible){
             visibleVote = game.Votes[player];
         } else {
             visibleVote = Vote.Undecided;

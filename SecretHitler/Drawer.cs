@@ -21,19 +21,29 @@ public class Drawer {
         }
     }
 
-    public void ReplaceHandOnDeck(GameState game){
-        var hand = game.Hand.RemoveAll();
-        game.Deck.AddToTop(hand);
+    public bool ReplaceOnDeck(GameState game, int index){
+        if(index < game.Hand.Count){
+            var replaced = game.Hand.RemoveAt(index);
+            game.Deck.AddToTop(replaced);
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public void DiscardOne(GameState game, int index){
+    public void Discard(GameState game, int index){
         var policy = game.Hand.RemoveAt(index);
         game.Discard.AddToTop(policy);
     }
 
-    public void DiscardHand(GameState game){
-        var hand = game.Hand.RemoveAll();
-        game.Discard.AddToTop(hand);
+    public bool TryUnDiscard(GameState game){
+        if(game.Discard.Count > 0){
+            var drawn = game.Discard.RemoveFromTop();
+            game.Hand.AddToBottom(drawn);
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

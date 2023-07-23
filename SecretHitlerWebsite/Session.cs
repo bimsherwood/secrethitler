@@ -29,17 +29,18 @@ public class Session {
     }
 
     public interface ILockedSession {
-        GameState? Game { get; }
+        GameState Game { get; }
         List<string> RegisteredPlayers { get; }
         bool GameStarted { get; }
     }
 
     private class LockedSession : ILockedSession {
-        public GameState? Game { get; set; }
+        private GameState? MaybeGame { get; set; }
         public List<string> RegisteredPlayers { get; set; }
+        public GameState Game => this.MaybeGame ?? throw new InvalidOperationException("The game has not started.");
         public bool GameStarted => this.Game != null;
         public LockedSession(GameState? game, List<string> registeredPlayers){
-            this.Game = game;
+            this.MaybeGame = game;
             this.RegisteredPlayers = registeredPlayers;
         }
     }
