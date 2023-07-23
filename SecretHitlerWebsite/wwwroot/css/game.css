@@ -25,6 +25,18 @@
     white-space: nowrap;
 }
 
+.player-alliance-indicator span {
+    min-width: 48px;
+    margin: 2px;
+    cursor: default;
+    background-color: darkred;
+    color: white;
+}
+
+.player-alliance-indicator span:hover {
+    color: white;
+}
+
 .player-vote-indicator span {
     min-width: 48px;
     margin: 2px;

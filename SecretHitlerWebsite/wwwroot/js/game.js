@@ -148,6 +148,12 @@ var render = (function(){
                 $playerRow.find(".player-vote-indicator span").addClass("vote-no");
                 $playerRow.find(".player-vote-indicator span").text("No");
             }
+            if (e.alliance != null){
+                $playerRow.find(".player-alliance-indicator span").text(e.alliance);
+                $playerRow.find(".player-alliance-indicator").removeClass("d-none");
+            } else {
+                $playerRow.find(".player-alliance-indicator").addClass("d-none");
+            }
             $playerRow.find(".player-give-button button").click(events.triggerGive);
         });
     }
@@ -170,7 +176,7 @@ var render = (function(){
         $(".hand").addClass("d-none");
         $(".hand-label").addClass("d-none");
         if(game.currentPlayer == game.hasTheFloor){
-            $(".hand-title").text("Hand (you have the floor)");
+            $(".hand-title").text("You have the floor");
             $.each(game.hand, function(i, e){
                 if(e == "Liberal"){
                     $(".hand").eq(i).prop("src", cardBackLiberalUrl);
@@ -186,7 +192,7 @@ var render = (function(){
                 $(".pass-policy-button").addClass("d-none");
             }
         } else {
-            $(".hand-title").text("(" + game.hasTheFloor + " has the floor)");
+            $(".hand-title").text(game.hasTheFloor + " has the floor");
         }
     }
 

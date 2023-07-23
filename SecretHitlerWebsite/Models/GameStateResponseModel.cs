@@ -45,6 +45,7 @@ public class GameStateResponse {
     }
 
     private PlayerModel MapPlayer(GameState game, Player player, string currentPlayerName){
+
         Vote visibleVote;
         var voteIsVisible = player.Name == currentPlayerName
             || game.Votes.Values.All(o => o != Vote.Undecided);
@@ -53,17 +54,39 @@ public class GameStateResponse {
         } else {
             visibleVote = Vote.Undecided;
         }
-        var model = new PlayerModel(player, visibleVote);
+
+        string? alliance;
+        var playerRole = game.Roles[player];
+        var currentPlayer = game.Players.Single(o => o.Name == currentPlayerName);
+        var currentPlayerRole = game.Roles[currentPlayer];
+        var allianceIsVisible = currentPlayerRole.IsConfederate
+            || (currentPlayerRole.IsHitler && game.Players.Count < 7);
+        if(allianceIsVisible){
+            if(playerRole.IsHitler){
+                alliance = "H";
+            } else if (playerRole.IsConfederate){
+                alliance = "F";
+            } else {
+                alliance = null;
+            }
+        } else {
+            alliance = null;
+        }
+
+        var model = new PlayerModel(player, visibleVote, alliance);
         return model;
+
     }
 
     public class PlayerModel {
         public string Name { get; set; }
         public string Vote { get; set; }
-        public PlayerModel(Player player, Vote vote){
+        public string? Alliance { get; set; }
+        public PlayerModel(Player player, Vote vote, string? alliance){
             this.Name = player.Name;
             this.Vote = Enum.GetName(vote)
                 ?? throw new ArgumentException($"Unknown vote {vote}");
+            this.Alliance = alliance;
         }
     }
     

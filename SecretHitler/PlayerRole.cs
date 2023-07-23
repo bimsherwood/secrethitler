@@ -3,33 +3,33 @@ namespace SecretHitler;
 public class PlayerRole {
 
     public bool IsHitler { get; private set; }
-    public bool IsNazi { get; private set; }
-    public bool IsConfederate => this.IsNazi && !this.IsHitler;
-    public bool IsLiberal => !this.IsNazi;
+    public bool IsFascist { get; private set; }
+    public bool IsConfederate => this.IsFascist && !this.IsHitler;
+    public bool IsLiberal => !this.IsFascist;
 
     private PlayerRole(){
         this.IsHitler = false;
-        this.IsNazi = false;
+        this.IsFascist = false;
     }
 
     public static PlayerRole Hitler(){
         return new PlayerRole(){
             IsHitler = true,
-            IsNazi = true
+            IsFascist = true
         };
     }
 
     public static PlayerRole Confederate(){
         return new PlayerRole(){
             IsHitler = false,
-            IsNazi = true
+            IsFascist = true
         };
     }
     
     public static PlayerRole Liberal(){
         return new PlayerRole(){
             IsHitler = false,
-            IsNazi = false
+            IsFascist = false
         };
     }
 
