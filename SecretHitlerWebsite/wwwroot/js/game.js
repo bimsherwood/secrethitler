@@ -31,7 +31,13 @@ var events = (function(){
         triggerDiscard: trigger("discard"),
         onDiscard: on("discard"),
         triggerUnDiscard: trigger("unDiscard"),
-        onUnDiscard: on("unDiscard")
+        onUnDiscard: on("unDiscard"),
+        triggerPassPolicy: trigger("passPolicy"),
+        onPassPolicy: on("passPolicy"),
+        triggerUndoPolicy: trigger("undoPolicy"),
+        onUndoPolicy: on("undoPolicy"),
+        triggerPassTopPolicy: trigger("passTopPolicy"),
+        onPassTopPolicy: on("passTopPolicy")
     };
 
 })();
@@ -98,7 +104,29 @@ var ajax = (function(){
                 url: baseUrl + "/UnDiscard",
                 error: events.triggerAjaxError
             });
-        }
+        },
+        passPolicy: function(){
+            return $.ajax({
+                method: "POST",
+                url: baseUrl + "/PassPolicy",
+                error: events.triggerAjaxError
+            });
+        },
+        undoPolicyToHand: function (policy){
+            return $.ajax({
+                method: "POST",
+                url: baseUrl + "/UndoPolicyToHand",
+                data: { policy },
+                error: events.triggerAjaxError
+            });
+        },
+        passTopPolicy: function (){
+            return $.ajax({
+                method: "POST",
+                url: baseUrl + "/PassTopPolicy",
+                error: events.triggerAjaxError
+            });
+        },
     };
 
 })();
@@ -152,6 +180,11 @@ var render = (function(){
                 $(".hand").eq(i).removeClass("d-none");
                 $(".hand-label").eq(i).removeClass("d-none");
             });
+            if (game.hand.length == 1){
+                $(".pass-policy-button").removeClass("d-none");
+            } else {
+                $(".pass-policy-button").addClass("d-none");
+            }
         } else {
             $(".hand-title").text("(" + game.hasTheFloor + " has the floor)");
         }
@@ -217,6 +250,17 @@ var render = (function(){
     events.onUnDiscard(function(e){
         ajax.unDiscard().then(render);
     });
+    events.onPassPolicy(function(e){
+        ajax.passPolicy().then(render);
+    });
+    events.onUndoPolicy(function(e){
+        var $button = $(e.target);
+        var policy = $button.data("policy");
+        ajax.undoPolicyToHand(policy).then(render);
+    });
+    events.onPassTopPolicy(function(e){
+        ajax.passTopPolicy().then(render);
+    });
 })();
 
 // On start
@@ -227,5 +271,8 @@ $(function(){
     $(".discard-pile-undiscard-button").click(events.triggerUnDiscard);
     $(".discard-button").click(events.triggerDiscard);
     $(".replace-button").click(events.triggerReplaceOnDeck);
+    $(".pass-policy-button").click(events.triggerPassPolicy);
+    $(".undo-policy-button").click(events.triggerUndoPolicy);
+    $(".pass-top-policy-button").click(events.triggerPassTopPolicy);
     ajax.getGameState().then(render);
 });

@@ -33,7 +33,7 @@
 
 <div class="game-container">
     <div class="row">
-        <div class="col-md-3 d-flex">
+        <div class="col-md-4 d-flex">
             <div class="card w-100">
                 <div class="card-header">Players</div>
                 <div class="card-body">
@@ -43,7 +43,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3 d-flex">
+        <div class="col-md-2 d-flex">
             <div class="card w-100">
                 <div class="card-header">Vote</div>
                 <div class="card-body">
@@ -61,57 +61,6 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6 d-flex">
-            <div class="card w-100">
-                <div class="card-header">Policies Passed</div>
-                <div class="card-body">
-                    <div class="container-flex policy-pane">
-                        <div class="row">
-                            <div class="col col-md-2">
-                                <img class="policy policy-liberal" src="~/cardback.png" />
-                            </div>
-                            <div class="col col-md-2">
-                                <img class="policy policy-liberal" src="~/cardback.png" />
-                            </div>
-                            <div class="col col-md-2">
-                                <img class="policy policy-liberal" src="~/cardback.png" />
-                            </div>
-                            <div class="col col-md-2">
-                                <img class="policy policy-liberal" src="~/cardback.png" />
-                            </div>
-                            <div class="col col-md-2">
-                                <img class="policy policy-liberal" src="~/cardback.png" />
-                            </div>
-                            <div class="col col-md-2">
-                                <!-- Liberals only need to pass 5 policies -->
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col col-md-2">
-                                <img class="policy policy-fascist" src="~/cardback.png" />
-                            </div>
-                            <div class="col col-md-2">
-                                <img class="policy policy-fascist" src="~/cardback.png" />
-                            </div>
-                            <div class="col col-md-2">
-                                <img class="policy policy-fascist" src="~/cardback.png" />
-                            </div>
-                            <div class="col col-md-2">
-                                <img class="policy policy-fascist" src="~/cardback.png" />
-                            </div>
-                            <div class="col col-md-2">
-                                <img class="policy policy-fascist" src="~/cardback.png" />
-                            </div>
-                            <div class="col col-md-2">
-                                <img class="policy policy-fascist" src="~/cardback.png" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
         <div class="col-md-2 d-flex">
             <div class="card w-100">
                 <div class="card-header">Deck</div>
@@ -130,6 +79,13 @@
                                     <div>
                                         <button type="button" class="deck-draw-button btn btn-dark">Draw</button>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col col-md-12">
+                                <div class="text-center">
+                                    <button class="pass-top-policy-button btn btn-primary">Pass Top Polcy</button>
                                 </div>
                             </div>
                         </div>
@@ -159,58 +115,6 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6 d-flex">
-            <div class="card w-100">
-                <div class="card-header hand-title">Hand</div>
-                <div class="card-body">
-                    <div class="container-flex hand-pane">
-                        <div class="row">
-                            <div class="col col-md-4">
-                                <img class="hand d-none" src="~/cardback.png" />
-                            </div>
-                            <div class="col col-md-4">
-                                <img class="hand d-none" src="~/cardback.png" />
-                            </div>
-                            <div class="col col-md-4">
-                                <img class="hand d-none" src="~/cardback.png" />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col col-md-4">
-                                <div class="hand-label d-none">
-                                    <div>
-                                        <button type="button" class="discard-button btn btn-danger" data-hand-index="0">Discard</button>
-                                    </div>
-                                    <div>
-                                        <button type="button" class="replace-button btn btn-dark" data-hand-index="0">Put On Deck</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col col-md-4">
-                                <div class="hand-label d-none">
-                                    <div>
-                                        <button type="button" class="discard-button btn btn-danger" data-hand-index="1">Discard</button>
-                                    </div>
-                                    <div>
-                                        <button type="button" class="replace-button btn btn-dark" data-hand-index="1">Put On Deck</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col col-md-4">
-                                <div class="hand-label d-none">
-                                    <div>
-                                        <button type="button" class="discard-button btn btn-danger" data-hand-index="2">Discard</button>
-                                    </div>
-                                    <div>
-                                        <button type="button" class="replace-button btn btn-dark" data-hand-index="2">Put On Deck</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="col-md-2 d-flex">
             <div class="card w-100">
                 <div class="card-header">Your Role</div>
@@ -224,6 +128,109 @@
                                         <span class="role-annotation"></span>
                                     </p>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 d-flex">
+            <div class="card w-100">
+                <div class="card-header hand-title">Hand</div>
+                <div class="card-body">
+                    <div class="container-flex hand-pane pile-pane">
+                        <div class="row">
+                            <div class="col col-md-4">
+                                <img class="hand d-none" src="~/cardback.png" />
+                                <div class="hand-label card-annotation d-none">
+                                    <div>
+                                        <button type="button" class="discard-button btn btn-danger" data-hand-index="0">Discard</button>
+                                    </div>
+                                    <div>
+                                        <button type="button" class="replace-button btn btn-dark" data-hand-index="0">Put On Deck</button>
+                                    </div>
+                                    <div>
+                                        <button type="button" class="pass-policy-button btn btn-primary" data-hand-index="0">Pass Policy</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col col-md-4">
+                                <img class="hand d-none" src="~/cardback.png" />
+                                <div class="hand-label card-annotation d-none">
+                                    <div>
+                                        <button type="button" class="discard-button btn btn-danger" data-hand-index="1">Discard</button>
+                                    </div>
+                                    <div>
+                                        <button type="button" class="replace-button btn btn-dark" data-hand-index="1">Put On Deck</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col col-md-4">
+                                <img class="hand d-none" src="~/cardback.png" />
+                                <div class="hand-label card-annotation d-none">
+                                    <div>
+                                        <button type="button" class="discard-button btn btn-danger" data-hand-index="2">Discard</button>
+                                    </div>
+                                    <div>
+                                        <button type="button" class="replace-button btn btn-dark" data-hand-index="2">Put On Deck</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 d-flex">
+            <div class="card w-100">
+                <div class="card-header">Policies Passed</div>
+                <div class="card-body">
+                    <div class="container-flex policy-pane">
+                        <div class="row">
+                            <div class="col col-md-2">
+                                <img class="policy policy-liberal" src="~/cardback.png" />
+                            </div>
+                            <div class="col col-md-2">
+                                <img class="policy policy-liberal" src="~/cardback.png" />
+                            </div>
+                            <div class="col col-md-2">
+                                <img class="policy policy-liberal" src="~/cardback.png" />
+                            </div>
+                            <div class="col col-md-2">
+                                <img class="policy policy-liberal" src="~/cardback.png" />
+                            </div>
+                            <div class="col col-md-2">
+                                <img class="policy policy-liberal" src="~/cardback.png" />
+                            </div>
+                            <div class="col col-md-2">
+                                <div style="margin: 8px;">
+                                    <button type="button" class="undo-policy-button btn btn-primary" data-policy="Liberal">X</button>
+                                </div>
+                                <div style="margin: 8px;">
+                                    <button type="button" class="undo-policy-button btn btn-danger" data-policy="Fascist">X</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col col-md-2">
+                                <img class="policy policy-fascist" src="~/cardback.png" />
+                            </div>
+                            <div class="col col-md-2">
+                                <img class="policy policy-fascist" src="~/cardback.png" />
+                            </div>
+                            <div class="col col-md-2">
+                                <img class="policy policy-fascist" src="~/cardback.png" />
+                            </div>
+                            <div class="col col-md-2">
+                                <img class="policy policy-fascist" src="~/cardback.png" />
+                            </div>
+                            <div class="col col-md-2">
+                                <img class="policy policy-fascist" src="~/cardback.png" />
+                            </div>
+                            <div class="col col-md-2">
+                                <img class="policy policy-fascist" src="~/cardback.png" />
                             </div>
                         </div>
                     </div>

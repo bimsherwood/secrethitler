@@ -130,26 +130,6 @@ public class HomeController : Controller {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 
-    private GameState CreateInitialGameState(List<string> playerNames){
-
-        var players = playerNames.Select(o => new Player(o)).ToList();
-        var game = new GameState(players);
-        var assigner = new RoleAssigner(Random.Shared);
-        var shuffler = new Shuffler(Random.Shared);
-        assigner.AssignRoles(game);
-        shuffler.Shuffle(game);
-
-        // Testing
-        game.LiberalPolicyPassed = 3;
-        game.FascistPolicyPassed = 2;
-        for(var i = 0; i < game.Players.Count; i++){
-            game.Votes[game.Players[i]] = new[]{ Vote.No, Vote.Yes }[i % 2];
-        }
-
-        return game;
-
-    }
-
     private Session CreateSession(string sessionKey, string firstPlayerName){
 
         var newSession = this.DataService.CreateSession(sessionKey);
@@ -164,6 +144,24 @@ public class HomeController : Controller {
 
         return newSession;
         
+    }
+
+    private GameState CreateInitialGameState(List<string> playerNames){
+
+        var players = playerNames.Select(o => new Player(o)).ToList();
+        var game = new GameState(players);
+        var assigner = new RoleAssigner(Random.Shared);
+        var shuffler = new Shuffler(Random.Shared);
+        assigner.AssignRoles(game);
+        shuffler.Shuffle(game);
+
+        // Testing
+        for(var i = 0; i < game.Players.Count; i++){
+            game.Votes[game.Players[i]] = new[]{ Vote.No, Vote.Yes }[i % 2];
+        }
+
+        return game;
+
     }
 
     private string PrimaryModelStateError(){

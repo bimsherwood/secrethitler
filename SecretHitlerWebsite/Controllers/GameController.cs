@@ -120,4 +120,43 @@ public class GameController : Controller {
         return RedirectToAction("GameState");
     }
 
+    public IActionResult PassPolicy(){
+        var passer = new PolicyPasser();
+        var session = this.DataService.GetSession(this.Cookies.Session);
+        session.LockSession(lockedSession => {
+            var game = lockedSession.Game;
+            if(game.Hand.Count == 1){
+                passer.PassHand(game);
+            }
+        });
+        return RedirectToAction("GameState");
+    }
+
+    public IActionResult PassTopPolicy(){
+        var passer = new PolicyPasser();
+        var shuffler = new Shuffler(Random.Shared);
+        var session = this.DataService.GetSession(this.Cookies.Session);
+        session.LockSession(lockedSession => {
+            var game = lockedSession.Game;
+            passer.MaybeShuffleThenPassTopPolicy(game, shuffler);
+        });
+        return RedirectToAction("GameState");
+    }
+
+    public IActionResult UndoPolicyToHand(string policy){
+        var passer = new PolicyPasser();
+        var session = this.DataService.GetSession(this.Cookies.Session);
+        session.LockSession(lockedSession => {
+            var game = lockedSession.Game;
+            if(game.Hand.Count < 3){
+                if(Enum.TryParse<Policy>(policy, out Policy parsedPolicy)){
+                    passer.TryRevokeToHand(game, parsedPolicy);
+                } else {
+                    throw new ArgumentException($"Unknown policy {policy}");
+                }
+            }
+        });
+        return RedirectToAction("GameState");
+    }
+
 }
