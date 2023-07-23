@@ -87,16 +87,14 @@ public class GameController : Controller {
         return RedirectToAction("GameState");
     }
 
-    /*
-    public IActionResult ReplaceOnDeck(){
+    public IActionResult Discard(int index){
         var drawer = new Drawer();
         var session = this.DataService.GetSession(this.Cookies.Session);
         session.LockSession(lockedSession => {
             var game = lockedSession.Game;
-            drawer.TryUnDiscard(game);
+            drawer.Discard(game, index);
         });
         return RedirectToAction("GameState");
     }
-    */
 
 }

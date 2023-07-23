@@ -25,7 +25,9 @@ var events = (function(){
         triggerDrawFromDeck: trigger("drawFromDeck"),
         onDrawFromDeck: on("drawFromDeck"),
         triggerReplaceOnDeck: trigger("replaceOnDeck"),
-        onReplaceOnDeck: on("replaceOnDeck")
+        onReplaceOnDeck: on("replaceOnDeck"),
+        triggerDiscard: trigger("discard"),
+        onDiscard: on("discard")
     };
 
 })();
@@ -42,7 +44,7 @@ var ajax = (function(){
         },
         passTheFloor: function(playerName){
             return $.ajax({
-                method: "GET",
+                method: "POST",
                 url: baseUrl + "/PassTheFloor",
                 data: { playerName },
                 error: events.triggerAjaxError
@@ -50,7 +52,7 @@ var ajax = (function(){
         },
         castVote: function(vote){
             return $.ajax({
-                method: "GET",
+                method: "POST",
                 url: baseUrl + "/CastVote",
                 data: { vote },
                 error: events.triggerAjaxError
@@ -58,15 +60,23 @@ var ajax = (function(){
         },
         drawFromDeck: function(){
             return $.ajax({
-                method: "GET",
+                method: "POST",
                 url: baseUrl + "/DrawFromDeck",
                 error: events.triggerAjaxError
             });
         },
         replaceOnDeck: function(index){
             return $.ajax({
-                method: "GET",
+                method: "POST",
                 url: baseUrl + "/ReplaceOnDeck",
+                data: { index },
+                error: events.triggerAjaxError
+            });
+        },
+        discard: function(index){
+            return $.ajax({
+                method: "POST",
+                url: baseUrl + "/Discard",
                 data: { index },
                 error: events.triggerAjaxError
             });
@@ -178,13 +188,18 @@ var render = (function(){
         var index = $button.data("hand-index");
         ajax.replaceOnDeck(index).then(render);
     });
+    events.onDiscard(function(e){
+        var $button = $(e.target);
+        var index = $button.data("hand-index");
+        ajax.discard(index).then(render);
+    });
 })();
 
 // On start
 $(function(){
     $(".vote-button-pane button").click(events.triggerVote);
     $(".deck-draw-button").click(events.triggerDrawFromDeck);
-    // TODO discard button
+    $(".discard-button").click(events.triggerDiscard);
     $(".replace-button").click(events.triggerReplaceOnDeck);
     ajax.getGameState().then(render);
 });
