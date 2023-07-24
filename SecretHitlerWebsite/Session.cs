@@ -38,7 +38,7 @@ public class Session {
         private GameState? MaybeGame { get; set; }
         public List<string> RegisteredPlayers { get; set; }
         public GameState Game => this.MaybeGame ?? throw new InvalidOperationException("The game has not started.");
-        public bool GameStarted => this.Game != null;
+        public bool GameStarted => this.MaybeGame != null;
         public LockedSession(GameState? game, List<string> registeredPlayers){
             this.MaybeGame = game;
             this.RegisteredPlayers = registeredPlayers;

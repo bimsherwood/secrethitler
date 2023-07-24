@@ -283,7 +283,9 @@ var render = (function(){
     events.onSignalRSuccess(function(){
         console.log("SignalR Connected");
     });
-    events.onSignalRReceived(render);
+    events.onSignalRReceived(function(){
+        ajax.getGameState().then(render);
+    });
 
 })();
 

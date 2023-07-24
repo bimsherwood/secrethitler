@@ -74,28 +74,34 @@ public class HomeController : Controller {
 
     [InvalidSessionExceptionFilter]
     public IActionResult NewGame(){
-        var session = CreateSession(this.Cookies.Session, this.Cookies.PlayerName);
-        ViewData["Session"] = this.Cookies.Session;
-        ViewData["MyName"] = this.Cookies.PlayerName;
-        ViewData["Players"] = new List<string>{ this.Cookies.PlayerName };
-        return View();
-
+        CreateSession(this.Cookies.Session, this.Cookies.PlayerName);
+        return RedirectToAction("Lobby", new { hosting = true });
     }
 
     [InvalidSessionExceptionFilter]
     public IActionResult JoinGame(){
+        return RedirectToAction("Lobby", new { hosting = false });
+    }
 
-        // Load the players list
+    public IActionResult Lobby(bool hosting){
+
         var session = this.DataService.GetSession(this.Cookies.Session);
         var players = new List<string>();
+        var started = false; 
         session.LockSession(lockedSession => {
             players.AddRange(lockedSession.RegisteredPlayers);
+            started = lockedSession.GameStarted;
         });
 
-        ViewData["Session"] = this.Cookies.Session;
-        ViewData["MyName"] = this.Cookies.PlayerName;
-        ViewData["Players"] = players;
-        return View();
+        if(started){
+            return RedirectToAction("Index", "Game");
+        } else {
+            ViewData["Session"] = this.Cookies.Session;
+            ViewData["MyName"] = this.Cookies.PlayerName;
+            ViewData["Players"] = players;
+            ViewData["Hosting"] = hosting;
+            return View();
+        }
         
     }
 
