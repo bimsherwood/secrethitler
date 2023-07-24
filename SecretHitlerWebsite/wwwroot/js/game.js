@@ -37,7 +37,15 @@ var events = (function(){
         triggerUndoPolicy: trigger("undoPolicy"),
         onUndoPolicy: on("undoPolicy"),
         triggerPassTopPolicy: trigger("passTopPolicy"),
-        onPassTopPolicy: on("passTopPolicy")
+        onPassTopPolicy: on("passTopPolicy"),
+        triggerSignalRSuccess: trigger("signalRSuccess"),
+        onSignalRSuccess: on("signalRSuccess"),
+        triggerSignalRFailure: trigger("signalRFailure"),
+        onSignalRFailure: on("signalRFailure"),
+        triggerSignalRReceived: trigger("signalRReceived"),
+        onSignalRReceived: on("signalRReceived"),
+        triggerSignalRNotify: trigger("signalRNotify"),
+        onSignalRNotify: on("signalRNotify")
     };
 
 })();
@@ -220,12 +228,13 @@ var render = (function(){
 (function(){
     events.onAjaxError(function(xhr, textStatus, errorThrown){
         console.log("An error has occurred: " + errorThrown);
+        $(".connection-error").removeClass("d-none");
     });
     events.onGive(function(e){
         var $button = $(e.target);
         var $playerRow = $button.closest(".player-row");
         var playerName = $playerRow.data("player-name");
-        ajax.passTheFloor(playerName).then(render);
+        ajax.passTheFloor(playerName).then(events.triggerSignalRNotify);
     });
     events.onVote(function(e){
         var $button = $(e.target);
@@ -235,38 +244,72 @@ var render = (function(){
         } else if($button.hasClass("vote-button-no")){
             vote = "No";
         }
-        ajax.castVote(vote).then(render);
+        ajax.castVote(vote).then(events.triggerSignalRNotify);
     });
     events.onDrawFromDeck(function(e){
-        ajax.drawFromDeck().then(render);
+        ajax.drawFromDeck().then(events.triggerSignalRNotify);
     });
     events.onDrawThree(function(e){
-        ajax.drawThree().then(render);
+        ajax.drawThree().then(events.triggerSignalRNotify);
     });
     events.onReplaceOnDeck(function(e){
         var $button = $(e.target);
         var index = $button.data("hand-index");
-        ajax.replaceOnDeck(index).then(render);
+        ajax.replaceOnDeck(index).then(events.triggerSignalRNotify);
     });
     events.onDiscard(function(e){
         var $button = $(e.target);
         var index = $button.data("hand-index");
-        ajax.discard(index).then(render);
+        ajax.discard(index).then(events.triggerSignalRNotify);
     });
     events.onUnDiscard(function(e){
-        ajax.unDiscard().then(render);
+        ajax.unDiscard().then(events.triggerSignalRNotify);
     });
     events.onPassPolicy(function(e){
-        ajax.passPolicy().then(render);
+        ajax.passPolicy().then(events.triggerSignalRNotify);
     });
     events.onUndoPolicy(function(e){
         var $button = $(e.target);
         var policy = $button.data("policy");
-        ajax.undoPolicyToHand(policy).then(render);
+        ajax.undoPolicyToHand(policy).then(events.triggerSignalRNotify);
     });
     events.onPassTopPolicy(function(e){
-        ajax.passTopPolicy().then(render);
+        ajax.passTopPolicy().then(events.triggerSignalRNotify);
     });
+
+    events.onSignalRFailure(function(ex){
+        $(".connection-error").removeClass("d-none");
+    });
+    events.onSignalRSuccess(function(){
+        console.log("SignalR Connected");
+    });
+    events.onSignalRReceived(render);
+
+})();
+
+// SignalR
+var gameHub = (function(){
+
+    var connection = null;
+
+    function connect(){
+        connection = new signalR.HubConnectionBuilder().withUrl(signalRUrl).build();
+        connection.on("ReceiveUpdate", events.triggerSignalRReceived);
+        connection.onclose(events.triggerSignalRFailure);
+        connection
+            .start()
+            .then(events.triggerSignalRSuccess)
+            .catch(events.triggerSignalRFailure);
+    }
+
+    events.onSignalRNotify(function(){
+        connection.invoke("NotifyUpdate");
+    });
+
+    return {
+        connect
+    };
+
 })();
 
 // On start
@@ -280,5 +323,6 @@ $(function(){
     $(".pass-policy-button").click(events.triggerPassPolicy);
     $(".undo-policy-button").click(events.triggerUndoPolicy);
     $(".pass-top-policy-button").click(events.triggerPassTopPolicy);
+    gameHub.connect();
     ajax.getGameState().then(render);
 });

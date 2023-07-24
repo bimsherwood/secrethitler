@@ -25,6 +25,7 @@
 
 <script type="text/javascript">
     var baseUrl = '@(Url.ActionLink("Index"))';
+    var signalRUrl = '@(Url.Content("GameHub"))';
     var cardBackUrl = '@(Url.Content("~/cardback.png"))';
     var cardBackLiberalUrl = '@(Url.Content("~/cardbackliberal.png"))';
     var cardBackFascistUrl = '@(Url.Content("~/cardbackfascist.png"))';
@@ -35,6 +36,11 @@
 }
 
 <div class="game-container">
+    <div class="row d-none connection-error">
+        <div class="col-md-12">
+            <div class="alert alert-danger">You are disconnected. Refresh the page to reconnect.</div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-4 d-flex">
             <div class="card w-100">

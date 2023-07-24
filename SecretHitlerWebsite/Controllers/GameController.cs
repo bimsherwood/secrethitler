@@ -41,7 +41,7 @@ public class GameController : Controller {
                 ?? throw new InvalidOperationException($"Player {playerName} does not exist.");
             game.HasTheFloor = targetPlayer;
         });
-        return RedirectToAction("GameState");
+        return Ok();
     }
     
     public IActionResult CastVote(string vote){
@@ -62,7 +62,7 @@ public class GameController : Controller {
                 throw new ArgumentException($"Unknown vote {vote}");
             }
         });
-        return RedirectToAction("GameState");
+        return Ok();
     }
 
     public IActionResult DrawThree(){
@@ -75,7 +75,7 @@ public class GameController : Controller {
                 drawer.MaybeShuffleThenDraw(game, shuffler, 3);
             }
         });
-        return RedirectToAction("GameState");
+        return Ok();
     }
 
     public IActionResult DrawFromDeck(){
@@ -87,7 +87,7 @@ public class GameController : Controller {
                 drawer.TryDraw(game, 1);
             }
         });
-        return RedirectToAction("GameState");
+        return Ok();
     }
 
     public IActionResult ReplaceOnDeck(int index){
@@ -97,7 +97,7 @@ public class GameController : Controller {
             var game = lockedSession.Game;
             drawer.ReplaceOnDeck(game, index);
         });
-        return RedirectToAction("GameState");
+        return Ok();
     }
 
     public IActionResult Discard(int index){
@@ -107,7 +107,7 @@ public class GameController : Controller {
             var game = lockedSession.Game;
             drawer.Discard(game, index);
         });
-        return RedirectToAction("GameState");
+        return Ok();
     }
 
     public IActionResult UnDiscard(){
@@ -117,7 +117,7 @@ public class GameController : Controller {
             var game = lockedSession.Game;
             drawer.TryUnDiscard(game);
         });
-        return RedirectToAction("GameState");
+        return Ok();
     }
 
     public IActionResult PassPolicy(){
@@ -129,7 +129,7 @@ public class GameController : Controller {
                 passer.PassHand(game);
             }
         });
-        return RedirectToAction("GameState");
+        return Ok();
     }
 
     public IActionResult PassTopPolicy(){
@@ -140,7 +140,7 @@ public class GameController : Controller {
             var game = lockedSession.Game;
             passer.MaybeShuffleThenPassTopPolicy(game, shuffler);
         });
-        return RedirectToAction("GameState");
+        return Ok();
     }
 
     public IActionResult UndoPolicyToHand(string policy){
@@ -156,7 +156,7 @@ public class GameController : Controller {
                 }
             }
         });
-        return RedirectToAction("GameState");
+        return Ok();
     }
 
 }

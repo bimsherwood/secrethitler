@@ -1,9 +1,11 @@
 using SecretHitlerWebsite;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSignalR();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient(typeof(Cookies));
 builder.Services.AddTransient(typeof(DataService));
@@ -28,5 +30,6 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapHub<GameHub>("/GameHub");
 
 app.Run();
