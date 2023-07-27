@@ -143,11 +143,6 @@ public class HomeController : Controller {
             lockedSession.RegisteredPlayers.Add(firstPlayerName);
         });
 
-        // TESTING
-        newSession.LockSession(lockedSession => {
-            lockedSession.RegisteredPlayers.AddRange(new [] { "Adam", "Bob", "Carol", "David" });
-        });
-
         return newSession;
         
     }
