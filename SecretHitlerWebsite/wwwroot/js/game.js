@@ -168,6 +168,17 @@ var render = (function(){
 
     function renderDeck(game){
         $(".draw-pile-count").text(game.drawPileSize);
+        if(game.currentPlayer == game.hasTheFloor){
+            $(".deck-draw-three-button").removeClass("d-none");
+            $(".deck-draw-button").removeClass("d-none");
+            $(".discard-pile-undiscard-button").removeClass("d-none");
+            $(".undo-policy-button").removeClass("d-none");
+        } else {
+            $(".deck-draw-three-button").addClass("d-none");
+            $(".deck-draw-button").addClass("d-none");
+            $(".discard-pile-undiscard-button").addClass("d-none");
+            $(".undo-policy-button").addClass("d-none");
+        }
     }
 
     function renderDiscardPile(game){
@@ -176,8 +187,8 @@ var render = (function(){
 
     function renderPolicies(game){
         $(".policy").prop("src", cardBackUrl);
-        $(".policy-liberal").slice(0,game.liberalPolicyPassed).prop("src", cardBackLiberalUrl);
-        $(".policy-fascist").slice(0,game.fascistPolicyPassed).prop("src", cardBackFascistUrl);
+        $(".policy-liberal").slice(0, game.liberalPolicyPassed).prop("src", cardBackLiberalUrl);
+        $(".policy-fascist").slice(0, game.fascistPolicyPassed).prop("src", cardBackFascistUrl);
     }
 
     function renderHand(game){
