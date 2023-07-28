@@ -45,6 +45,9 @@ public class HomeController : Controller {
                 } else if (lockedSession.RegisteredPlayers.Contains(application.PlayerName)) {
                     rejectionMessage = "That name is already taken.";
                     successfullyJoined = false;
+                } else if(lockedSession.RegisteredPlayers.Count >= 10) {
+                    rejectionMessage = "The lobby is full.";
+                    successfullyJoined = false;
                 } else {
                     lockedSession.RegisteredPlayers.Add(application.PlayerName);
                     successfullyJoined = true;

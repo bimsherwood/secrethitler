@@ -30,6 +30,8 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
 app.MapHub<GameHub>("/GameHub");
+app.MapHub<LobbyHub>("/LobbyHub");
 
 app.Run();

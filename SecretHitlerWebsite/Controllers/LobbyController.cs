@@ -20,6 +20,7 @@ public class LobbyController : Controller {
         this.DataService = dataService;
     }
 
+    [InvalidSessionExceptionFilter]
     public IActionResult Index(bool hosting){
 
         var session = this.DataService.GetSession(this.Cookies.Session);
@@ -35,11 +36,22 @@ public class LobbyController : Controller {
         } else {
             ViewData["Session"] = this.Cookies.Session;
             ViewData["MyName"] = this.Cookies.PlayerName;
-            ViewData["Players"] = players;
             ViewData["Hosting"] = hosting;
             return View();
         }
         
+    }
+
+    [InvalidSessionExceptionFilter]
+    public IActionResult LobbyState(){
+        var session = this.DataService.GetSession(this.Cookies.Session);
+        var players = new List<string>();
+        var started = false; 
+        session.LockSession(lockedSession => {
+            players.AddRange(lockedSession.RegisteredPlayers);
+            started = lockedSession.GameStarted;
+        });
+        return Json(new LobbyStateResponseModel(players, started));
     }
 
     [InvalidSessionExceptionFilter]
@@ -54,8 +66,7 @@ public class LobbyController : Controller {
         var game = CreateInitialGameState(players);
         session.SetGameState(game);
 
-        // Go to the game screen
-        return RedirectToAction("Index", "Game");
+        return Ok();
 
     }
 
