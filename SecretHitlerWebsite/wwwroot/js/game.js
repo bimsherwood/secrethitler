@@ -235,8 +235,39 @@ var render = (function(){
 
 })();
 
+var toast = (function(){
+
+    function addToast(message){
+        var $template = $("#toast-template").html();
+        var $toast = $($template);
+        $toast.find(".toast-body").text(message);
+        $(".toast-container").append($toast);
+        $toast.toast('show');
+    }
+
+    function preventSpam(){
+        var $allToasts = $(".toast.show");
+        var toastCount = $allToasts.length;
+        if(toastCount > 8){
+            $allToasts.slice(0, toastCount - 8).toast("hide");
+        }
+    }
+
+    return function(message){
+        addToast(message);
+        preventSpam();
+    }
+})();
+
 // Bindings
 (function(){
+
+    function signalRNotifyForMessage(message){
+        return function(){
+            events.triggerSignalRNotify(message);
+        }
+    }
+
     events.onAjaxError(function(xhr, textStatus, errorThrown){
         console.log("An error has occurred: " + errorThrown);
         $(".connection-error").removeClass("d-none");
@@ -245,47 +276,50 @@ var render = (function(){
         var $button = $(e.target);
         var $playerRow = $button.closest(".player-row");
         var playerName = $playerRow.data("player-name");
-        ajax.passTheFloor(playerName).then(events.triggerSignalRNotify);
+        ajax.passTheFloor(playerName).then(signalRNotifyForMessage("Gave to " + playerName));
     });
     events.onVote(function(e){
         var $button = $(e.target);
         var vote = "Undecided";
+        var message = "Cleared votes";
         if ($button.hasClass("vote-button-yes")){
             vote = "Yes";
+            message = "Voted";
         } else if($button.hasClass("vote-button-no")){
             vote = "No";
+            message = "Voted";
         }
-        ajax.castVote(vote).then(events.triggerSignalRNotify);
+        ajax.castVote(vote).then(signalRNotifyForMessage(message));
     });
     events.onDrawFromDeck(function(e){
-        ajax.drawFromDeck().then(events.triggerSignalRNotify);
+        ajax.drawFromDeck().then(signalRNotifyForMessage("Drew"));
     });
     events.onDrawThree(function(e){
-        ajax.drawThree().then(events.triggerSignalRNotify);
+        ajax.drawThree().then(signalRNotifyForMessage("Drew 3"));
     });
     events.onReplaceOnDeck(function(e){
         var $button = $(e.target);
         var index = $button.data("hand-index");
-        ajax.replaceOnDeck(index).then(events.triggerSignalRNotify);
+        ajax.replaceOnDeck(index).then(signalRNotifyForMessage("Put back"));
     });
     events.onDiscard(function(e){
         var $button = $(e.target);
         var index = $button.data("hand-index");
-        ajax.discard(index).then(events.triggerSignalRNotify);
+        ajax.discard(index).then(signalRNotifyForMessage("Discarded"));
     });
     events.onUnDiscard(function(e){
-        ajax.unDiscard().then(events.triggerSignalRNotify);
+        ajax.unDiscard().then(signalRNotifyForMessage("Un-discarded"));
     });
     events.onPassPolicy(function(e){
-        ajax.passPolicy().then(events.triggerSignalRNotify);
+        ajax.passPolicy().then(signalRNotifyForMessage("Passed policy"));
     });
     events.onUndoPolicy(function(e){
         var $button = $(e.target);
         var policy = $button.data("policy");
-        ajax.undoPolicyToHand(policy).then(events.triggerSignalRNotify);
+        ajax.undoPolicyToHand(policy).then(signalRNotifyForMessage("Repealed policy"));
     });
     events.onPassTopPolicy(function(e){
-        ajax.passTopPolicy().then(events.triggerSignalRNotify);
+        ajax.passTopPolicy().then(signalRNotifyForMessage("Passed top policy"));
     });
 
     events.onSignalRFailure(function(ex){
@@ -294,7 +328,9 @@ var render = (function(){
     events.onSignalRSuccess(function(){
         console.log("SignalR Connected");
     });
-    events.onSignalRReceived(function(){
+    events.onSignalRReceived(function(notification){
+        console.log("Notification", notification);
+        toast(notification);
         ajax.getGameState().then(render);
     });
 
@@ -315,8 +351,8 @@ var gameHub = (function(){
             .catch(events.triggerSignalRFailure);
     }
 
-    events.onSignalRNotify(function(){
-        connection.invoke("NotifyUpdate");
+    events.onSignalRNotify(function(message){
+        connection.invoke("NotifyUpdate", message);
     });
 
     return {

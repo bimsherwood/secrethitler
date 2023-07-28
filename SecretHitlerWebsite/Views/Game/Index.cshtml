@@ -23,6 +23,12 @@
     </div>
 </script>
 
+<script type="text/html" id="toast-template">
+    <div class="toast" role="alert">
+        <div class="toast-body"></div>
+    </div>
+</script>
+
 <script type="text/javascript">
     var baseUrl = '@(Url.ActionLink("Index"))';
     var signalRUrl = '@(Url.Content("GameHub"))';
@@ -251,4 +257,8 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="toast-container">
+    
 </div>

@@ -7,6 +7,20 @@
 
 
 
+/* Toasts */
+
+.toast-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.toast-container .toast {
+    width: auto;
+}
+
+
+
 /* Player pane */
 
 .player-row {
