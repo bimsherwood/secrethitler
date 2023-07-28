@@ -12,6 +12,7 @@ public class GameStateResponse {
     public string[] Hand { get; set; }
     public string CurrentPlayer { get; set; }
     public string HasTheFloor { get; set; }
+    public string PlayerMarked { get; set; }
     public string CurrentPlayerRole { get; set; }
 
     public GameStateResponse(Session.ILockedSession session, string currentPlayerName){
@@ -24,6 +25,7 @@ public class GameStateResponse {
         this.Hand = game.Hand.Clone().Select(PolicyName).ToArray();
         this.CurrentPlayer = currentPlayerName;
         this.HasTheFloor = game.HasTheFloor.Name;
+        this.PlayerMarked = game.Marked.Name;
         this.CurrentPlayerRole = PlayerRoleName(game, currentPlayerName);
     }
 

@@ -10,6 +10,7 @@ public class GameState {
 
     public List<Player> Players { get; set; }
     public Player HasTheFloor { get; set; }
+    public Player Marked { get; set; }
 
     public Dictionary<Player, PlayerRole> Roles { get; set; }
     public Dictionary<Player, Vote> Votes { get; set; }
@@ -20,6 +21,7 @@ public class GameState {
         this.Hand = Pile.Empty();
         this.Players = players.ToList();
         this.HasTheFloor = players.First();
+        this.Marked = players.First();
         this.Roles = players.ToDictionary(o => o, o => PlayerRole.Liberal());
         this.Votes = players.ToDictionary(o => o, o => Vote.Undecided);
     }

@@ -33,6 +33,20 @@
 
 }
 
+.player-marker {
+    margin-top: 9px;
+    margin-left: 4px;
+    width: 25px;
+    height: 25px;
+    background-color: grey;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.player-marker.active {
+    background-color: green;
+}
+
 .player-name {
     flex: 1;
     padding: 9px;

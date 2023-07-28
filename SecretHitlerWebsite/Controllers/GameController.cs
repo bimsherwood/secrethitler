@@ -43,6 +43,17 @@ public class GameController : Controller {
         });
         return Ok();
     }
+
+    public IActionResult MarkPlayer(string playerName){
+        var session = this.DataService.GetSession(this.Cookies.Session);
+        session.LockSession(lockedSession => {
+            var game = lockedSession.Game;
+            var targetPlayer = game.Players.FirstOrDefault(o => o.Name == playerName)
+                ?? throw new InvalidOperationException($"Player {playerName} does not exist.");
+            game.Marked = targetPlayer;
+        });
+        return Ok();
+    }
     
     public IActionResult CastVote(string vote){
         var caster = new VoteCaster();

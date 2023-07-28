@@ -20,6 +20,8 @@ var events = (function(){
         onAjaxError: on("ajaxError"),
         triggerGive: trigger("give"),
         onGive: on("give"),
+        triggerMarkPlayer: trigger("give"),
+        onMarkPlayer: on("give"),
         triggerVote: trigger("vote"),
         onVote: on("vote"),
         triggerDrawFromDeck: trigger("drawFromDeck"),
@@ -64,6 +66,14 @@ var ajax = (function(){
             return $.ajax({
                 method: "POST",
                 url: baseUrl + "/PassTheFloor",
+                data: { playerName },
+                error: events.triggerAjaxError
+            });
+        },
+        markPlayer: function(playerName){
+            return $.ajax({
+                method: "POST",
+                url: baseUrl + "/MarkPlayer",
                 data: { playerName },
                 error: events.triggerAjaxError
             });
@@ -148,6 +158,9 @@ var render = (function(){
             var $playerRow = $($template);
             $(".player-list").append($playerRow);
             $playerRow.data("player-name", e.name);
+            if(game.playerMarked == e.name){
+                $playerRow.find(".player-marker").addClass("active");
+            }
             $playerRow.find(".player-name span").text(e.name);
             if(e.vote == "Yes"){
                 $playerRow.find(".player-vote-indicator span").addClass("vote-yes");
@@ -162,6 +175,7 @@ var render = (function(){
             } else {
                 $playerRow.find(".player-alliance-indicator").addClass("d-none");
             }
+            $playerRow.find(".player-marker").click(events.triggerMarkPlayer);
             $playerRow.find(".player-give-button button").click(events.triggerGive);
         });
     }
@@ -277,6 +291,12 @@ var toast = (function(){
         var $playerRow = $button.closest(".player-row");
         var playerName = $playerRow.data("player-name");
         ajax.passTheFloor(playerName).then(signalRNotifyForMessage("Gave to " + playerName));
+    });
+    events.onMarkPlayer(function(e){
+        var $marker = $(e.target);
+        var $playerRow = $marker.closest(".player-row");
+        var playerName = $playerRow.data("player-name");
+        ajax.markPlayer(playerName).then(signalRNotifyForMessage("Marked " + playerName));
     });
     events.onVote(function(e){
         var $button = $(e.target);
