@@ -1,5 +1,5 @@
 using SecretHitlerWebsite;
-
+using SecretHitlerWebsite.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 

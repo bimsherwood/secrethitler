@@ -8,14 +8,17 @@ namespace SecretHitlerWebsite.Controllers;
 public class HomeController : Controller {
     
     private readonly ILogger<HomeController> Logger;
+    private readonly IConfiguration Config;
     private readonly Cookies Cookies;
     private readonly DataService DataService;
 
     public HomeController(
             ILogger<HomeController> logger,
+            IConfiguration config,
             Cookies cookies,
             DataService dataService) {
         this.Logger = logger;
+        this.Config = config;
         this.Cookies = cookies;
         this.DataService = dataService;
     }
@@ -75,56 +78,17 @@ public class HomeController : Controller {
     [InvalidSessionExceptionFilter]
     public IActionResult NewGame(){
         CreateSession(this.Cookies.Session, this.Cookies.PlayerName);
-        return RedirectToAction("Lobby", new { hosting = true });
+        return RedirectToAction("Index", "Lobby", new { hosting = true });
     }
 
     [InvalidSessionExceptionFilter]
     public IActionResult JoinGame(){
-        return RedirectToAction("Lobby", new { hosting = false });
-    }
-
-    public IActionResult Lobby(bool hosting){
-
-        var session = this.DataService.GetSession(this.Cookies.Session);
-        var players = new List<string>();
-        var started = false; 
-        session.LockSession(lockedSession => {
-            players.AddRange(lockedSession.RegisteredPlayers);
-            started = lockedSession.GameStarted;
-        });
-
-        if(started){
-            return RedirectToAction("Index", "Game");
-        } else {
-            ViewData["Session"] = this.Cookies.Session;
-            ViewData["MyName"] = this.Cookies.PlayerName;
-            ViewData["Players"] = players;
-            ViewData["Hosting"] = hosting;
-            return View();
-        }
-        
+        return RedirectToAction("Index", "Lobby", new { hosting = false });
     }
 
     public IActionResult Rejected(string message){
         ViewData["RejectionMessage"] = message;
         return View();
-    }
-
-    [InvalidSessionExceptionFilter]
-    public IActionResult StartGame(){
-
-        // Determine players
-        var session = this.DataService.GetSession(this.Cookies.Session);
-        var players = new List<string>();
-        session.LockSession(lockedSession => players.AddRange(lockedSession.RegisteredPlayers));
-
-        // Create a game
-        var game = CreateInitialGameState(players);
-        session.SetGameState(game);
-
-        // Go to the game screen
-        return RedirectToAction("Index", "Game");
-
     }
 
     public IActionResult InvalidSession(){
@@ -143,26 +107,14 @@ public class HomeController : Controller {
             lockedSession.RegisteredPlayers.Add(firstPlayerName);
         });
 
-        return newSession;
-        
-    }
-
-    private GameState CreateInitialGameState(List<string> playerNames){
-
-        var players = playerNames.Select(o => new Player(o)).ToList();
-        var game = new GameState(players);
-        var assigner = new RoleAssigner(Random.Shared);
-        var shuffler = new Shuffler(Random.Shared);
-        assigner.AssignRoles(game);
-        shuffler.Shuffle(game);
-
-        // Testing
-        for(var i = 0; i < game.Players.Count; i++){
-            game.Votes[game.Players[i]] = new[]{ Vote.No, Vote.Yes }[i % 2];
+        if(this.Config["ASPNETCORE_ENVIRONMENT"] == "Development"){
+            newSession.LockSession(lockedSession => {
+                lockedSession.RegisteredPlayers.AddRange(new [] { "Bob", "Carol", "David", "Edward" });
+            });
         }
 
-        return game;
-
+        return newSession;
+        
     }
 
     private string PrimaryModelStateError(){

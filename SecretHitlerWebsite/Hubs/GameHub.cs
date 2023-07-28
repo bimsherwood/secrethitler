@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.SignalR;
-using SecretHitlerWebsite.Models;
 
-namespace SecretHitlerWebsite;
+namespace SecretHitlerWebsite.Hubs;
 
 public class GameHub : Hub {
     public async Task NotifyUpdate() {

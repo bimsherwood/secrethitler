@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/SecretHitlerTest/SecretHitlerTest.csproj",
+                "${workspaceFolder}/SecretHitlerWebsite/SecretHitlerWebsite.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/SecretHitlerTest/SecretHitlerTest.csproj",
+                "${workspaceFolder}/SecretHitlerWebsite/SecretHitlerWebsite.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -33,7 +33,7 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/SecretHitlerTest/SecretHitlerTest.csproj"
+                "${workspaceFolder}/SecretHitlerWebsite/SecretHitlerWebsite.csproj"
             ],
             "problemMatcher": "$msCompile"
         }
